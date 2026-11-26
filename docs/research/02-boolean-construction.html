@@ -86,6 +86,18 @@ ul li { margin: 6px 0; }
     <p>All three stayed compatible on every test icon. The worst one was off from the true boolean by 0.33 px² in total, across the whole icon.</p>
   </div>
 
+  <h2>What "a rule on the skeleton" means</h2>
+  <p>An outline boolean takes two finished shapes and works out where their edges cross. That answer is only right for one weight. At another weight the edges cross somewhere else, so the boolean builds a differently made shape. One weight might have 10 points and another 12. Masters built that way often can't interpolate.</p>
+  <p>A skeleton rule stores what you meant instead of the result. For example: "this slash cuts the ring, with 1 px of clearance each side." At every weight, the pipeline rebuilds the cut from that sentence, using a shape whose structure is decided in advance. Only the point positions change with weight, never how many points there are.</p>
+  <h3>Worked example: the "off" slash</h3>
+  <ol class="rules">
+    <li><b>Source:</b> a ring skeleton (a circle) and a slash skeleton (a line) tagged <span class="mono">cut gap=1</span>.</li>
+    <li><b>At each weight:</b> work out the ring's outer and inner edges. Then work out two cut lines parallel to the slash, each half the stroke plus 1 px from its centre line.</li>
+    <li><b>Build each half of the ring</b> the same way every time: outer arc, straight cut edge, inner arc back, straight cut edge. That's always two pieces of six segments each.</li>
+    <li><b>Add the slash</b> as its own stroke.</li>
+  </ol>
+  <p>The gap stays exactly 1 px at every weight, or follows whatever rule you give it, because the gap is part of the rule rather than something to redraw. The same idea covers the other cases. A merge's rule is "these parts overlap", so there's nothing to compute. A clip's rule is "this edge is that edge", so the half disc reuses the ring's inner-radius formula.</p>
+
   <h2>How the test works</h2>
   <p>Four test icons, each needing a different boolean. Each method builds three masters (weights 100, 400 and 700). The font then fills in the weights in between.</p>
   <p>At nine weights, the result is compared with the true boolean, worked out from scratch at that weight. The score is the area where they disagree, in square pixels at 24 px. It's sampled every 0.1 px. Below about 0.5 px² the difference spreads along the edges and isn't visible.</p>

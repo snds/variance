@@ -18,6 +18,34 @@ Don't run booleans on outlines. Turn each boolean into a rule on the skeleton.
   where the cutter crosses it, and shape each cut end from the cutter. Masters
   stayed compatible on every test icon, with at most 0.33 px² of total error.
 
+## What "a rule on the skeleton" means
+
+An outline boolean takes two finished shapes and works out where their edges
+cross. That answer is only right for one weight. At another weight the edges
+cross somewhere else, so the boolean builds a differently made shape (10
+points here, 12 there), and masters built that way often can't interpolate.
+
+A skeleton rule stores what you meant, not the result. For example: "this
+slash cuts the ring, with 1 px of clearance each side." At every weight the
+pipeline rebuilds the cut from that rule, using a shape whose structure is
+decided in advance. Only point positions change with weight, never how many
+points there are.
+
+**Worked example, the "off" slash:**
+
+1. Source: a ring skeleton (circle) and a slash skeleton (line) tagged `cut gap=1`.
+2. At each weight: work out the ring's outer and inner edges, and two cut
+   lines parallel to the slash, each half the stroke plus 1 px from its centre line.
+3. Build each ring half the same way every time: outer arc, straight cut
+   edge, inner arc back, straight cut edge. Always two pieces of six segments.
+4. Add the slash as its own stroke.
+
+The gap stays exactly 1 px at every weight (or follows whatever rule you give
+it), because it's part of the rule rather than something redrawn. The same
+idea covers the other cases. A merge's rule is "these parts overlap", so
+there's nothing to compute. A clip's rule is "this edge is that edge", so the
+half disc reuses the ring's inner-radius formula.
+
 ## Test setup
 
 Masters at wght 100 / 400 / 700. Scored at 100–700 in steps of 75 against
