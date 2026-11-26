@@ -68,13 +68,18 @@ CARBON = os.path.join(SRC, "carbon", "package", "svg", "32")
 def carbon_names():
     return sorted(f[:-4] for f in os.listdir(CARBON) if f.endswith(".svg"))
 
+def strip_invisible(txt):
+    """Carbon ships invisible helper shapes (fill="none" or opacity 0), for
+    example the inner shape of a filled icon. They are not ink."""
+    return re.sub(r'<(rect|path|circle|polygon|ellipse)[^>]*(fill="none"|opacity="0")[^>]*/>', "", txt)
+
 def carbon_contours(name):
     """Carbon 32-unit artboard scaled x30 onto the 960 grid, y flipped up.
     Invisible helper rects (fill none / opacity 0) are dropped."""
     path = os.path.join(CARBON, name + ".svg")
     txt = open(path).read()
     # drop invisible helper shapes Carbon sometimes ships
-    txt = re.sub(r'<rect[^>]*(fill="none"|opacity="0")[^>]*/>', "", txt)
+    txt = strip_invisible(txt)
     import tempfile
     with tempfile.NamedTemporaryFile("w", suffix=".svg", delete=False) as t: t.write(txt); tmp = t.name
     pen = CubicPen()
