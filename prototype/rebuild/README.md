@@ -1,11 +1,17 @@
 # Rebuild
 
 Turns outlined icons into Variance sources and checks them (research 03),
-and measures how Google corrects Material across masters (research 04).
+measures how Google corrects Material across masters (research 04), and runs
+the same tests on any SVG icon set (research 05).
 
     export VARIANCE_SRC=/path/to/src   # ms-*.ttf instances, ms-outlined.codepoints, carbon/package/svg/32
     python batch.py OUT [material|carbon] [names...]
     python summarize.py OUT
+    # research 05: six more sets under $VARIANCE_SRC/sets/<npm package>/package
+    python pairs.py OUT.json [job ...]          # weight/size edge moves from pixels
+    python fillfp.py OUT.json [set ...]         # FILL fingerprints
+    python gtruth.py OUTDIR <set> <variant> N   # answer-key / filled rebuilds
+    python fig05.py PAIRS.json FILL.json OUTDIR
 
 | File | Job |
 |---|---|
@@ -23,3 +29,9 @@ and measures how Google corrects Material across masters (research 04).
 | `carbon16.py` | Carbon's 16 px redraws against its 32 px drawings |
 | `overlay.py` | Default vs master contact sheets |
 | `material-ranking.csv`, `material-rules.json`, `material-tiers-summary.json`, `carbon16-results.json` | Research 04 outputs |
+| `anyset.py` | Research 05: load any SVG set (strokes outlined with their pen, fill rules, helpers dropped) |
+| `edgemove.py`, `pairs.py` | Edge moves measured from pixels, for sets without matching points |
+| `fillfp.py` | FILL fingerprints: filled style vs the outline with counters flooded |
+| `gtruth.py` | Answer-key test on Lucide/Tabler centre-lines; filled rebuilds |
+| `fig05.py` | Research 05 figures |
+| `anyset-pairs.json`, `anyset-fill.json`, `anyset-rebuilds.csv` | Research 05 outputs |

@@ -139,12 +139,16 @@ def fit_path(pts, grid, eps=1.6, arc_tol=1.6):
                 best = (m, cx, cy, r); break
         if best:
             m, cx, cy, r = best
-            a0 = math.atan2(P[idx[k]][1] - cy, P[idx[k]][0] - cx)
-            mid = P[(idx[k] + idx[m]) // 2]; am = math.atan2(mid[1] - cy, mid[0] - cx)
-            a1 = math.atan2(P[idx[m]][1] - cy, P[idx[m]][0] - cx)
-            sweep_ccw = ((am - a0) % (2 * math.pi)) < ((a1 - a0) % (2 * math.pi))
-            span = (a1 - a0) % (2 * math.pi) if sweep_ccw else (a0 - a1) % (2 * math.pi)
-            segs.append(("A", (cx, cy), r, span > math.pi, sweep_ccw, idx[m])); k = m
+            # turn measured along the samples (not from the two ends, which
+            # coincide on a full ring), then split into pieces of 90 deg or
+            # less so no arc is ambiguous: a closed ring used to come out as
+            # a zero-length arc (found on Lucide/Tabler circles, research 05)
+            seg = P[idx[k]:idx[m] + 1]
+            ang = np.unwrap(np.arctan2(seg[:, 1] - cy, seg[:, 0] - cx)); tot = ang[-1] - ang[0]
+            npc = max(1, int(math.ceil(abs(tot) / (math.pi / 2) - 1e-9)))
+            for j in range(1, npc + 1):
+                segs.append(("A", (cx, cy), r, False, tot > 0, idx[k] + round(j * (idx[m] - idx[k]) / npc)))
+            k = m
         else:
             segs.append(("L", idx[k + 1])); k += 1
     # build d with snapped coordinates; arcs keep their snapped centre and radius

@@ -13,7 +13,7 @@ the originals and, for Material, against Google's weight 100 and 700 masters.
   Skia boolean bug, not a source-format limit.
 - **Exact is the easy part.** Patches (fixed shapes) can match anything. What
   counts is the share of ink driven by rules. The automatic rebuild reached a
-  median of 92% (Material) and 96% (Carbon). 28 of 40 reached 90%.
+  median of 93% (Material) and 96% (Carbon). 31 of 40 reached 90%.
 - **Weight is the big finding.** No single rule reproduces Google's masters.
   The best explains about 50% of the change at weight 100 and 14% at 700.
   Material anchors counters and moves the silhouette (the opposite of research
@@ -37,12 +37,16 @@ Rebuilds are byte-identical run to run.
 |---|---|---|
 | Dot or short stroke? Same width, can't tell from the outline. | deselect, padel | Layer name `solid`. |
 | Gap learned as stroke ends, not a cut. Closes at heavier weight. | notification--off | Layer name `cut gap=1`. |
-| Closed rings and organic curves missed by the centre-line finder. | emoji_language, portfolio--management | Drawn as strokes in a real source; add a closed-loop case to the tool. |
+| Organic curves missed by the centre-line finder. (Closed rings were a bug, fixed in research 05.) | fingerprint_off | Drawn as strokes in a real source. |
 | Filled shapes with knockouts patched instead of built. | logo--kubernetes | Layer name `knockout`. |
 
 Correction (same day): Carbon ships invisible helper shapes (`fill="none"`) in some
 filled icons. The first run counted them as ink for kubernetes--control-plane-node
 and microservices--2; fixed, they reach 99% and 96% rules.
+
+Correction (research 05): whole rings came out as zero-length arcs, a bug in the
+arc fitter. Fixed, emoji_language rose from 52% to 94% rules, padel from 77%
+to 99% and portfolio--management from 38% to 95%. Numbers above include the fix.
 
 Carbon needed one-sided cuts (`side=left|right`); Material didn't.
 
@@ -71,7 +75,7 @@ than not changing):
 
 - Fit the anchor rule per stroke against Google's masters.
 - Hand-build five icons with no patches, to confirm the gaps are the tool's.
-- Fix the closed-ring case.
+- ~~Fix the closed-ring case.~~ Done in research 05.
 
 ## Per-icon results
 
@@ -94,7 +98,7 @@ Parts = strokes / solids / knockouts / cuts.
 | carbon | `logo--kubernetes` | engine bug | 45% | 1/1/1/1 |
 | carbon | `microservices--2` | exact | 96% | 11/0/0/0 |
 | carbon | `notification--off` | exact | 98% | 11/0/0/0 |
-| carbon | `portfolio--management` | exact | 38% | 4/0/0/0 |
+| carbon | `portfolio--management` | exact | 95% | 4/0/0/0 |
 | carbon | `qiskit` | exact | 95% | 25/0/0/0 |
 | carbon | `result--new` | exact | 94% | 7/1/0/0 |
 | carbon | `smoke` | exact | 99% | 5/0/0/0 |
@@ -103,13 +107,13 @@ Parts = strokes / solids / knockouts / cuts.
 | material | `dataset_linked` | exact | 92% | 14/0/0/1 |
 | material | `deselect` | exact | 60% | 5/0/0/0 |
 | material | `desktop_cloud_stack` | exact | 97% | 6/0/0/0 |
-| material | `emoji_language` | exact | 52% | 15/0/0/0 |
+| material | `emoji_language` | exact | 94% | 15/0/0/1 |
 | material | `fingerprint_off` | exact | 59% | 1/4/0/0 |
 | material | `hdr_plus_off` | exact | 90% | 10/1/0/2 |
 | material | `keyboard_lock` | exact | 77% | 3/2/0/0 |
 | material | `notifications_off` | exact | 93% | 10/0/0/0 |
 | material | `order_approve` | exact | 94% | 5/1/1/0 |
-| material | `padel` | exact | 77% | 3/9/0/0 |
+| material | `padel` | exact | 99% | 3/9/0/0 |
 | material | `poker_chip` | exact | 98% | 24/1/0/0 |
 | material | `prescriptions` | exact | 96% | 7/0/0/2 |
 | material | `repeat_one_on` | exact | 97% | 9/1/9/0 |

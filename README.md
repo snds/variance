@@ -17,6 +17,9 @@ Research phase. See [docs/research](docs/research/) and the [decision log](docs/
 |---|---|
 | [01 · Construction and idempotency](docs/research/01-construction-and-idempotency.md) | How to build icons for variability, the correction recipes, and what the prototype proved. A live version with the prototype font is [01-construction-and-idempotency.html](docs/research/01-construction-and-idempotency.html). |
 | [02 · Boolean construction](docs/research/02-boolean-construction.md) | Five ways to build merges, cut-outs and clips from skeletons, tested against true booleans. Proof tables: [02-boolean-construction.html](docs/research/02-boolean-construction.html). |
+| [03 · Rebuilding real icons](docs/research/03-rebuilding-real-icons.md) | The 20 hardest Material and 20 hardest Carbon icons rebuilt as Variance sources, and what Google's weights do. [HTML](docs/research/03-rebuilding-real-icons.html). |
+| [04 · Correction fingerprints](docs/research/04-correction-fingerprints.md) | Every edge of all 4,004 Material Symbols across six masters: rules, five fix kinds, and the redraw list. [HTML](docs/research/04-correction-fingerprints.html). |
+| [05 · Any icon set](docs/research/05-any-icon-set.md) | Six more sets (Lucide, Tabler, Phosphor, Fluent, Heroicons, Remix): an answer-key test of the fitter, weight and size patterns, and what FILL does. [HTML](docs/research/05-any-icon-set.html). |
 
 ## Prototype
 
