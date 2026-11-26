@@ -210,12 +210,12 @@ footer { margin-top: 56px; font-size: 13px; color: var(--muted); }
     <li><b>Proof.</b> Produce a proof sheet like the one above, plus a file hash to show nothing changed when nothing should have.</li>
   </ol>
 
-  <h2>Decisions for you</h2>
+  <h2>Decisions</h2>
   <ol class="rules">
-    <li><b>Source format.</b> I recommend stroked skeleton SVGs as the only input for v1. The other path is to accept outlined art and fit a skeleton to it automatically. That's much harder and loses detail.</li>
-    <li><b>Hand-drawn overrides.</b> Should a designer be able to supply a hand-drawn master for one icon at one location, such as opsz 20? Material seems to need this for small sizes, where detail has to go, not just thicken.</li>
-    <li><b>First axes.</b> I'd ship wght and FILL first, then opsz and GRAD. Those two cover most product needs, and FILL holds the hardest open problem.</li>
-    <li><b>FILL midpoints.</b> Options: an extra master at 0.5, a remapped FILL curve so the awkward middle passes quickly, or designing counters to shrink around details. I'd test all three on ten real icons before choosing.</li>
+    <li><span class="pill good">DECIDED</span> <b>Source format.</b> Stroked skeleton SVGs are the only input for v1. Boolean construction is covered in <a href="https://claude.ai/artifact/Axin6TN2CGjek4xqPqAMvc">research 02</a>.</li>
+    <li><span class="pill warn">DESIGN FOR</span> <b>Hand-drawn overrides.</b> Nice-to-have, but the architecture should allow it. That means a glyph editor, like Glyphs, where a designer adjusts each generated master's points. To keep builds repeatable, store each override as point moves on top of the generated master, not as a replacement drawing. If the source's structure changes, the override is flagged as stale instead of silently applied.</li>
+    <li><span class="pill good">DECIDED</span> <b>First axes.</b> wght and FILL first, then opsz and GRAD.</li>
+    <li><span class="pill good">DECIDED</span> <b>FILL midpoints.</b> Test all three options on ten real icons before choosing: an extra master at 0.5, a remapped FILL curve, or counters that shrink around details.</li>
   </ol>
 
   <footer>

@@ -138,6 +138,8 @@ fixed, so the same corners are added every build.
 
 ## Open decisions
 
+_All four were decided on 2026-11-26. See the [decision log](../decisions.md)._
+
 1. **Source format.** Recommended: stroked skeleton SVG only for v1. Fitting skeletons to outlined art is much harder and lossy.
 2. **Hand-drawn overrides.** Allow a hand-drawn master per icon per location (likely needed at opsz 20, where detail must go, not just thicken)?
 3. **First axes.** Recommended: wght and FILL first, then opsz and GRAD.

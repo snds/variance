@@ -11,7 +11,7 @@ and a rebuild gives a byte-identical font.
 
 ## Status
 
-Research phase. See [docs/research](docs/research/).
+Research phase. See [docs/research](docs/research/) and the [decision log](docs/decisions.md).
 
 | Doc | What it covers |
 |---|---|
