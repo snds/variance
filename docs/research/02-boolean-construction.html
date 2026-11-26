@@ -70,6 +70,25 @@ table.bool .v { font: 11px var(--mono); color: var(--muted); font-variant-numeri
 table.bool .na { font: 20px var(--mono); color: var(--muted); height: 56px; line-height: 56px; }
 table.bool td { vertical-align: middle; padding: 6px; }
 ul li { margin: 6px 0; }
+/* Figma comparison */
+.cmp { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 20px 0; }
+.lane { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 16px; min-width: 0; display: grid; gap: 14px; align-content: start; }
+.lane h4 { font: 600 15px var(--display); margin: 0; }
+.lane .tag { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.step { display: grid; gap: 6px; }
+.step-t { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.layers { font: 13px/1.5 var(--body); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; background: var(--paper); }
+.layers div { display: flex; gap: 8px; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.layers .i1 { padding-left: 16px; } .layers .i2 { padding-left: 32px; } .layers .i3 { padding-left: 48px; }
+.layers .ic { width: 14px; text-align: center; color: var(--muted); font-family: var(--mono); flex: none; }
+.layers .nm { font-family: var(--mono); font-size: 12px; }
+.layers .dim { color: var(--muted); font-size: 12px; }
+.svgout { font: 12px/1.5 var(--mono); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; overflow-x: auto; white-space: pre; }
+.minis { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.minis figure { margin: 0; text-align: center; font: 11px var(--mono); color: var(--muted); }
+.minis svg { width: 52px; height: 52px; display: block; }
+.verdict { font-size: 14px; }
+.verdict .pill { margin-right: 6px; }
 </style>
 
 <div class="wrap">
@@ -97,6 +116,72 @@ ul li { margin: 6px 0; }
     <li><b>Add the slash</b> as its own stroke.</li>
   </ol>
   <p>The gap stays exactly 1 px at every weight, or follows whatever rule you give it, because the gap is part of the rule rather than something to redraw. The same idea covers the other cases. A merge's rule is "these parts overlap", so there's nothing to compute. A clip's rule is "this edge is that edge", so the half disc reuses the ring's inner-radius formula.</p>
+
+  <h2>How you'd build it in Figma</h2>
+  <p>Here's the same "off" slash icon built two ways. The difference comes down to which Figma tools you use, and which you stop using.</p>
+  <div class="cmp">
+    <div class="lane">
+      <div><div class="tag">Today</div><h4>Boolean groups, outlined and flattened</h4></div>
+      <div class="step"><div class="step-t">1 · Layers</div>
+        <div class="layers" aria-label="Figma layers panel, typical build">
+          <div><span class="ic">#</span><span class="nm">slash_off</span><span class="dim">24 × 24</span></div>
+          <div class="i1"><span class="ic">◩</span><span class="nm">Union</span></div>
+          <div class="i2"><span class="ic">◩</span><span class="nm">Subtract</span></div>
+          <div class="i3"><span class="ic">◯</span><span class="nm">Ring</span><span class="dim">outlined</span></div>
+          <div class="i3"><span class="ic">▭</span><span class="nm">Gap</span><span class="dim">rect, 4 px wide</span></div>
+          <div class="i2"><span class="ic">╱</span><span class="nm">Slash</span><span class="dim">outlined</span></div>
+        </div>
+      </div>
+      <div class="step"><div class="step-t">2 · Per weight</div>
+        <p class="verdict">Repeat for every weight you need. Redraw the gap rectangle each time so the gap stays 1 px, because thicker strokes need a wider gap rectangle. Then flatten.</p>
+      </div>
+      <div class="step"><div class="step-t">3 · What export sends</div>
+        <div class="svgout">&lt;path d="M…"/&gt;   one path per weight
+no cutter, no gap size, no roles</div>
+      </div>
+      <div class="step"><div class="step-t">4 · Result</div>
+        <div class="minis" id="today-minis"></div>
+        <p class="verdict"><span class="pill bad">BROKEN</span>Each weight's flattened path has its own point order, so the masters don't line up and the font can't be built.</p>
+      </div>
+    </div>
+    <div class="lane">
+      <div><div class="tag">With Variance</div><h4>Live strokes, named roles, one drawing</h4></div>
+      <div class="step"><div class="step-t">1 · Layers</div>
+        <div class="layers" aria-label="Figma layers panel, Variance build">
+          <div><span class="ic">#</span><span class="nm">slash_off</span><span class="dim">24 × 24</span></div>
+          <div class="i1"><span class="ic">◯</span><span class="nm">ring</span><span class="dim">stroke 2, inside</span></div>
+          <div class="i1"><span class="ic">╱</span><span class="nm">slash cut gap=1</span><span class="dim">stroke 2, centre, cap none</span></div>
+        </div>
+      </div>
+      <div class="step"><div class="step-t">2 · Per weight</div>
+        <p class="verdict">Nothing. You draw once, at weight 400. No boolean group, no Outline stroke, no Flatten, and no gap rectangle. The layer name carries the intent.</p>
+      </div>
+      <div class="step"><div class="step-t">3 · What export sends</div>
+        <div class="svgout">&lt;circle id="ring" stroke-width="2" …/&gt;
+&lt;line id="slash-cut-gap-1" stroke-width="2" …/&gt;
+skeletons + roles survive</div>
+      </div>
+      <div class="step"><div class="step-t">4 · Result</div>
+        <div class="minis" id="variance-minis"></div>
+        <p class="verdict"><span class="pill good">MATCH</span>Variance rebuilds the cut at every weight from the rule. The gap stays 1 px and the masters always line up.</p>
+      </div>
+    </div>
+  </div>
+  <h3>Figma tool by tool</h3>
+  <div class="grid-wrap"><table>
+    <thead><tr><th>Figma tool</th><th>With Variance</th></tr></thead>
+    <tbody>
+      <tr><td><b>Union</b> boolean group</td><td>Leave the layers overlapping, with no group. The font merges them.</td></tr>
+      <tr><td><b>Subtract</b> with a gap shape</td><td>Don't draw the gap. Name the cutter <span class="mono">… cut gap=1</span>. Add <span class="mono">hidden</span> if the cutter shouldn't be drawn.</td></tr>
+      <tr><td><b>Intersect</b></td><td>Name the clipped layer <span class="mono">… clip=ring.counter</span>.</td></tr>
+      <tr><td><b>Exclude</b>, or a knocked-out detail</td><td>Name the detail <span class="mono">… knockout</span>.</td></tr>
+      <tr><td><b>Outline stroke</b>, <b>Flatten</b></td><td>Never. Strokes stay live, because the stroke's centre line is the source.</td></tr>
+      <tr><td>Stroke settings</td><td>Inside on closed shapes, centre on open ones. Cap None, join Round.</td></tr>
+      <tr><td>Weight variants</td><td>Don't draw them. Variance generates every weight. A hand-drawn fix for one spot is a later override.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout"><p><b>The catch.</b> Because nothing is cut in Figma, your canvas shows the slash overlapping the ring with no gap. You'd design the gap blind. A small Variance plugin could show a live preview of the generated icon beside the frame. I'd treat that as the first tooling piece after the pipeline itself.</p>
+  <p><b>To verify on real files:</b> how Figma writes inside-aligned strokes into SVG, and whether layer names come through as ids with the export settings you use.</p></div>
 
   <h2>How the test works</h2>
   <p>Four test icons, each needing a different boolean. Each method builds three masters (weights 100, 400 and 700). The font then fills in the weights in between.</p>
@@ -200,4 +285,11 @@ for (const [k, name, kind] of icons) {
   h += "</tbody></table></div>";
 }
 document.getElementById("proof").innerHTML = h;
+function mini(c, label) {
+  return c ? `<figure><svg viewBox="0 -960 960 960" aria-hidden="true"><g transform="scale(1,-1)"><path d="${c.d}" fill="var(--ink)"/><path d="${c.err}" fill="var(--bad)" opacity="0.9"/></g></svg>${label}</figure>`
+           : `<figure><svg viewBox="0 0 52 52" aria-hidden="true"><text x="26" y="32" text-anchor="middle" fill="var(--bad)" font-size="18" font-family="monospace">✕</text></svg>${label}</figure>`;
+}
+const lbl = ["100", "250", "400", "550", "700"];
+document.getElementById("today-minis").innerHTML = R["B-M3"].cells.map((c, i) => mini(c, lbl[i])).join("");
+document.getElementById("variance-minis").innerHTML = R["B-M4"].cells.map((c, i) => mini(c, lbl[i])).join("");
 </script>

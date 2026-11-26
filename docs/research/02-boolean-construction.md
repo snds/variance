@@ -46,6 +46,37 @@ idea covers the other cases. A merge's rule is "these parts overlap", so
 there's nothing to compute. A clip's rule is "this edge is that edge", so the
 half disc reuses the ring's inner-radius formula.
 
+## How you'd build it in Figma
+
+The same "off" slash icon, built two ways. The proof page shows both side by side.
+
+**Today:** a `Union` group holding a `Subtract` group (the outlined ring minus
+a gap rectangle) plus an outlined slash. You repeat this for every weight,
+redrawing the gap rectangle so the gap stays 1 px, then flatten. Export sends
+one path per weight, with no cutter, gap size or roles. Each flattened path
+has its own point order, so the masters don't line up and the font can't be built.
+
+**With Variance:** two live layers, drawn once at weight 400:
+`ring` (stroke 2, inside) and `slash cut gap=1` (stroke 2, centre, cap none).
+There's no boolean group, Outline stroke, Flatten or gap rectangle. Export
+sends the skeletons with their names, and Variance rebuilds the cut at every weight.
+
+| Figma tool | With Variance |
+|---|---|
+| Union group | Leave the layers overlapping, with no group |
+| Subtract with a gap shape | Don't draw the gap; name the cutter `… cut gap=1` (`hidden` if not drawn) |
+| Intersect | Name the clipped layer `… clip=ring.counter` |
+| Exclude / knocked-out detail | Name the detail `… knockout` |
+| Outline stroke, Flatten | Never. Strokes stay live; the centre line is the source |
+| Stroke settings | Inside on closed shapes, centre on open ones; cap None, join Round |
+| Weight variants | Don't draw them. A hand-drawn fix for one spot is a later override |
+
+**The catch:** nothing is cut in Figma, so the canvas shows no gap, and you'd
+design the gap blind. A small Variance plugin that previews the generated icon
+beside the frame should be the first tooling piece after the pipeline.
+**To verify on real files:** how Figma writes inside-aligned strokes into SVG,
+and whether layer names come through as ids with the chosen export settings.
+
 ## Test setup
 
 Masters at wght 100 / 400 / 700. Scored at 100–700 in steps of 75 against
