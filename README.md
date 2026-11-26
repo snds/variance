@@ -16,6 +16,7 @@ Research phase. See [docs/research](docs/research/).
 | Doc | What it covers |
 |---|---|
 | [01 · Construction and idempotency](docs/research/01-construction-and-idempotency.md) | How to build icons for variability, the correction recipes, and what the prototype proved. A live version with the prototype font is [01-construction-and-idempotency.html](docs/research/01-construction-and-idempotency.html). |
+| [02 · Boolean construction](docs/research/02-boolean-construction.md) | Five ways to build merges, cut-outs and clips from skeletons, tested against true booleans. Proof tables: [02-boolean-construction.html](docs/research/02-boolean-construction.html). |
 
 ## Prototype
 
