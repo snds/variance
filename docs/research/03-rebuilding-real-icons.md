@@ -9,8 +9,8 @@ the originals and, for Material, against Google's weight 100 and 700 masters.
 
 ## Answer
 
-- **Default style: exact.** 38 of 40 match to within 1/20 px. The other 2 hit a
-  Skia boolean bug, not a source-format limit.
+- **Default style: exact.** All 40 match to within 1/20 px. (The first run
+  had 38; the last 2 hit a Skia boolean bug, worked around in research 05.)
 - **Exact is the easy part.** Patches (fixed shapes) can match anything. What
   counts is the share of ink driven by rules. The automatic rebuild reached a
   median of 93% (Material) and 96% (Carbon). 31 of 40 reached 90%.
@@ -86,7 +86,7 @@ Parts = strokes / solids / knockouts / cuts.
 | carbon | `chart--spiral` | exact | 94% | 9/0/0/0 |
 | carbon | `document--signed` | exact | 96% | 6/0/0/1 |
 | carbon | `encryption` | exact | 98% | 14/0/0/0 |
-| carbon | `fingerprint-recognition` | engine bug | 81% | 2/3/0/1 |
+| carbon | `fingerprint-recognition` | exact | 81% | 2/3/0/1 |
 | carbon | `firewall--classic` | exact | 98% | 6/0/0/0 |
 | carbon | `group-objects` | exact | 95% | 15/0/0/0 |
 | carbon | `ibm--mq` | exact | 90% | 8/0/0/0 |
@@ -95,7 +95,7 @@ Parts = strokes / solids / knockouts / cuts.
 | carbon | `keyboard--off` | exact | 88% | 9/0/0/0 |
 | carbon | `kubernetes--control-plane-node` | exact | 99% | 9/0/0/0 |
 | carbon | `load-balancer--pool` | exact | 99% | 13/0/0/1 |
-| carbon | `logo--kubernetes` | engine bug | 45% | 1/1/1/1 |
+| carbon | `logo--kubernetes` | exact | 88% | 1/1/1/1 |
 | carbon | `microservices--2` | exact | 96% | 11/0/0/0 |
 | carbon | `notification--off` | exact | 98% | 11/0/0/0 |
 | carbon | `portfolio--management` | exact | 95% | 4/0/0/0 |

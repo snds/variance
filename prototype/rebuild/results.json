@@ -66,10 +66,10 @@
   "set": "carbon",
   "name": "fingerprint-recognition",
   "ink_px2": 151.6,
-  "fit_px2": 28.75,
-  "fit_core": 32781,
-  "final_px2": 7.43,
-  "final_core": 10865,
+  "fit_px2": 28.62,
+  "fit_core": 32653,
+  "final_px2": 0.49,
+  "final_core": 0,
   "strokes": 2,
   "solids": 3,
   "knockouts": 0,
@@ -78,14 +78,19 @@
     "cut": 60,
     "side": "both",
     "id": "s0_0"
+   },
+   {
+    "cut": 60,
+    "side": "both",
+    "id": "s1_0"
    }
   ],
-  "patch_px2": 28.51,
+  "patch_px2": 28.13,
   "detail_px2": 0.0,
   "detail_patches": 0,
-  "patch_pieces": 42,
-  "rule_share": 0.812,
-  "secs": 2.9
+  "patch_pieces": 37,
+  "rule_share": 0.814,
+  "secs": 5.1
  },
  {
   "set": "carbon",
@@ -257,8 +262,8 @@
   "ink_px2": 253.9,
   "fit_px2": 30.99,
   "fit_core": 46919,
-  "final_px2": 31.08,
-  "final_core": 47250,
+  "final_px2": 0.05,
+  "final_core": 0,
   "strokes": 1,
   "solids": 1,
   "knockouts": 1,
@@ -269,12 +274,12 @@
     "id": "s5_0"
    }
   ],
-  "patch_px2": 139.0,
-  "detail_px2": 136.32,
-  "detail_patches": 9,
-  "patch_pieces": 15,
-  "rule_share": 0.453,
-  "secs": 2.4
+  "patch_px2": 31.03,
+  "detail_px2": 28.4,
+  "detail_patches": 7,
+  "patch_pieces": 11,
+  "rule_share": 0.878,
+  "secs": 4.6
  },
  {
   "set": "carbon",

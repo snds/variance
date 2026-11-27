@@ -58,6 +58,7 @@ def run(args):
         out = {"set": s, "icon": n, "W": W, "fit_px2": round(fitted[0], 2), "fit_core": fitted[1],
                "final_px2": round(final[0], 2), "final_core": final[1],
                "rule_share": round(1 - min(patch_area, ink) / ink, 3),
+               "patch_via": sorted({p["patch"].get("via", "") for p in full if p.get("patch")}),
                "true_paths": len(lines), "strokes": sum(p["kind"] == "stroke" for p in parts),
                "solids": sum(p["kind"] == "solid" and not (p.get("role") or {}).get("knockout") for p in parts),
                "knockouts": sum(bool((p.get("role") or {}).get("knockout")) for p in parts)}

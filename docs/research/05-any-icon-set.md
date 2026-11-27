@@ -12,14 +12,18 @@ solid at three sizes) and Remix (line and fill).
 
 - **The fitter works on real stroke drawings.** Lucide and Tabler ship their
   true centre-lines, so they are an answer key. From the outline alone, the
-  fitter got 291 of 300 icons exact, with a median of 98% (Lucide) and 97%
+  fitter got all 300 icons exact, with a median of 98% (Lucide) and 97%
   (Tabler) of ink in rules. Recovered centre-lines sit a median 0.02 px from
   the true ones.
 - **The test found a real bug.** Whole circles came out as zero-length arcs.
   Fixed. Three research 03 icons improved by 22 to 57 points (now 93% median
   Material, 31 of 40 icons at 90%+).
-- **Filled icons rebuild too.** 188 of 200 filled icons from five sets came out
-  exact as solids + knockouts, with a median of 98–99% in rules.
+- **Filled icons rebuild too.** All 200 filled icons from five sets came out
+  exact as solids + knockouts, with a median of 98–99.6% in rules.
+- **Every miss was the geometry engine, not the fitter.** The first run had 291
+  of 300 and 188 of 200. All 21 misses were Skia booleans returning a wrong
+  shape for the final fix-up patch. Trying the patch on slightly rounded copies
+  and keeping the best fixed all 21, and research 03's last two (now 40/40).
 - **The same five correction kinds show up in every set** (rule, resize,
   anchor, crowding, reshape). The amounts are each set's own style.
 - **Weight has two house styles.** Phosphor's weights are the same centre-line
@@ -145,23 +149,37 @@ fitter finds them):
 
 | Set | Exact | Median rule share | 90%+ rules |
 |---|---|---|---|
-| Heroicons solid | 40/40 | 99% | 39 |
-| Remix fill | 36/40 | 98% | 35 |
-| Phosphor fill | 33/40 | 99% | 32 |
+| Heroicons solid | 40/40 | 99.4% | 39 |
+| Remix fill | 40/40 | 99.4% | 38 |
+| Phosphor fill | 40/40 | 99.6% | 39 |
 | Tabler filled | 40/40 | 99.6% | 40 |
-| Fluent filled | 39/40 | 98% | 29 |
+| Fluent filled | 40/40 | 98.4% | 30 |
 
-The 12 misses failed to close their patch (the same Skia boolean trouble as
-research 03), not to fit.
+## Closing the last misses
+
+The first run left 9 stroke icons and 12 filled icons short of exact. In all
+21, the fit was fine (for some, already exact before patching). The miss came
+from the last step: Skia's boolean difference, used to build the fix-up patch,
+returned a wrong shape where two outlines share nearly the same edge. The
+patch then added or removed the wrong ink.
+
+The patch step now tries, in order: exact booleans; booleans on copies rounded
+to 1/16, 1/4 and 1 unit; and last, a patch traced from the pixel difference.
+It keeps whichever scores best and never keeps a patch that makes the icon
+worse. Of the 500 icons, 61 needed no patch, 426 closed with exact booleans
+and 13 needed a rounded copy (1/16 unit in 11, coarser in 2). None needed the
+traced fallback.
+Research 03's two remaining misses, fingerprint-recognition and
+logo--kubernetes, are exact now too (logo--kubernetes: 45% → 88% rules).
 
 ## Answer-key test (Lucide, Tabler)
 
 | | Lucide | Tabler |
 |---|---|---|
 | Icons | 150 | 150 |
-| Exact | 146 | 145 |
+| Exact | 150 | 150 |
 | Median rule share | 98.5% | 97% |
-| 90%+ rules | 147 | 135 |
+| 90%+ rules | 149 | 138 |
 | True centre-line found (median) | 99% | 96% |
 | Recovered line that is real (median) | 99% | 98% |
 | Median distance from true line | 0.6 units (0.015 px) | 0.7 units (0.018 px) |
