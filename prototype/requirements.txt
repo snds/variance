@@ -5,3 +5,4 @@ scipy==1.18.1
 scikit-image==0.26.0
 skan==0.13.1
 pillow
+scikit-learn==1.9.1
