@@ -20,6 +20,7 @@ Research phase. See [docs/research](docs/research/) and the [decision log](docs/
 | [03 · Rebuilding real icons](docs/research/03-rebuilding-real-icons.md) | The 20 hardest Material and 20 hardest Carbon icons rebuilt as Variance sources, and what Google's weights do. [HTML](docs/research/03-rebuilding-real-icons.html). |
 | [04 · Correction fingerprints](docs/research/04-correction-fingerprints.md) | Every edge of all 4,004 Material Symbols across six masters: rules, five fix kinds, and the redraw list. [HTML](docs/research/04-correction-fingerprints.html). |
 | [05 · Any icon set](docs/research/05-any-icon-set.md) | Six more sets (Lucide, Tabler, Phosphor, Fluent, Heroicons, Remix): an answer-key test of the fitter, weight and size patterns, and what FILL does. [HTML](docs/research/05-any-icon-set.html). |
+| [06 · Closing the weight gap](docs/research/06-closing-the-weight-gap.md) | Dot primitive, a pen-only weight test on Phosphor, and a learned anchor rule for Material. [HTML](docs/research/06-closing-the-weight-gap.html). |
 
 ## Prototype
 

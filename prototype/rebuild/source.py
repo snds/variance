@@ -46,7 +46,8 @@ def stroke_path(d, width, cap="butt", join="miter", align="center", miter=10):
 
 def part_shape(part, width=None):
     if part["kind"] == "solid": return fill(path_from_d(part["d"]))
-    return stroke_path(part["d"], width or part["width"], part.get("cap", "butt"), part.get("join", "miter"), part.get("align", "center"))
+    w = (width or part["width"]) + part.get("extra", 0)   # extra: a dot drawn wider than the stroke
+    return stroke_path(part["d"], w, part.get("cap", "butt"), part.get("join", "miter"), part.get("align", "center"))
 
 def _rounded(p, q=1/16):
     """Copy of a path with coordinates on a 1/16-unit grid. Skia's boolean

@@ -1,0 +1,342 @@
+<title>Closing the Weight Gap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; proof tables of small glyph renders, one table per test icon. */
+:root {
+  --paper: #f5f6f8; --surface: #ffffff; --ink: #14181f; --muted: #5b6472; --rule: #d9dde4;
+  --accent: #2f5bd3; --accent-soft: #e6ecfb; --good: #1f7a4a; --warn: #a15c00; --bad: #b3261e;
+  --display: "Instrument Sans", "IBM Plex Sans", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0f1217; --surface: #161a21; --ink: #e8ebf0; --muted: #9aa3b2; --rule: #2a303a;
+  --accent: #8aa8ff; --accent-soft: #1d2640; --good: #5fc48d; --warn: #e3a64a; --bad: #ff8a80; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0f1217; --surface: #161a21; --ink: #e8ebf0; --muted: #9aa3b2; --rule: #2a303a;
+  --accent: #8aa8ff; --accent-soft: #1d2640; --good: #5fc48d; --warn: #e3a64a; --bad: #ff8a80; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font: 16px/1.6 var(--body); }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 40px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.2; }
+h1 { font-size: 2.2rem; margin: 0 0 8px; letter-spacing: -0.01em; }
+h2 { font-size: 1.45rem; margin: 48px 0 12px; padding-top: 24px; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.1rem; margin: 28px 0 8px; }
+p, li { max-width: 65ch; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.lede { font-size: 1.15rem; color: var(--ink); }
+.meta { color: var(--muted); font-size: 14px; }
+code, .mono { font-family: var(--mono); font-size: 0.9em; }
+a { color: var(--accent); }
+.answer { background: var(--accent-soft); border-radius: 10px; padding: 16px 20px; margin: 24px 0; }
+.answer p { margin: 6px 0; }
+/* Specimen bench */
+.bench { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 20px; margin: 28px 0; }
+.bench-top { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; }
+.glyphs { display: flex; gap: 12px; align-items: center; font-family: "Proto Symbols"; color: var(--ink); line-height: 1; }
+.glyphs span { font-size: 120px; display: block; }
+.glyphs .sm { font-size: 24px; }
+.sliders { flex: 1 1 260px; min-width: 0; display: grid; gap: 10px; }
+.sliders label { display: grid; grid-template-columns: 52px 1fr 48px; gap: 10px; align-items: center; font: 500 13px var(--mono); }
+.sliders output { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=range]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bench-note { font-size: 13px; color: var(--muted); margin: 14px 0 0; }
+.fvs { font: 12px var(--mono); color: var(--muted); word-break: break-all; }
+/* Proof grid */
+.grid-wrap { overflow-x: auto; margin: 16px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+td.num { font-variant-numeric: tabular-nums; font-family: var(--mono); white-space: nowrap; }
+.proof td { text-align: center; }
+.proof .g { font-family: "Proto Symbols"; font-size: 44px; line-height: 1; display: inline-block; }
+.proof td:first-child { text-align: left; font: 500 13px var(--mono); vertical-align: middle; }
+.pill { display: inline-block; font: 600 11px/1 var(--mono); padding: 4px 7px; border-radius: 999px; letter-spacing: 0.04em; border: 1px solid currentColor; }
+.pill.good { color: var(--good); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); }
+ol.rules { padding-left: 1.3em; } ol.rules li { margin: 6px 0; }
+.pipeline { display: grid; gap: 8px; margin: 16px 0; padding: 0; list-style: none; counter-reset: s; }
+.pipeline li { counter-increment: s; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px 10px 48px; position: relative; max-width: none; }
+.pipeline li::before { content: counter(s); position: absolute; left: 14px; top: 10px; font: 600 13px var(--mono); color: var(--accent); }
+.pipeline b { font-family: var(--display); }
+.callout { border-left: 3px solid var(--warn); padding: 4px 0 4px 14px; margin: 16px 0; }
+footer { margin-top: 56px; font-size: 13px; color: var(--muted); }
+@media (max-width: 480px) { h1 { font-size: 1.8rem; } .glyphs span { font-size: 88px; } }
+
+table.bool th.c, table.bool td.c { text-align: center; }
+table.bool svg { width: 56px; height: 56px; display: block; margin: 0 auto; }
+table.bool .v { font: 11px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; margin-top: 2px; }
+table.bool .na { font: 20px var(--mono); color: var(--muted); height: 56px; line-height: 56px; }
+table.bool td { vertical-align: middle; padding: 6px; }
+ul li { margin: 6px 0; }
+/* Figma comparison */
+.cmp { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 20px 0; }
+.lane { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 16px; min-width: 0; display: grid; gap: 14px; align-content: start; }
+.lane h4 { font: 600 15px var(--display); margin: 0; }
+.lane .tag { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.step { display: grid; gap: 6px; }
+.step-t { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.layers { font: 13px/1.5 var(--body); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; background: var(--paper); }
+.layers div { display: flex; gap: 8px; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.layers .i1 { padding-left: 16px; } .layers .i2 { padding-left: 32px; } .layers .i3 { padding-left: 48px; }
+.layers .ic { width: 14px; text-align: center; color: var(--muted); font-family: var(--mono); flex: none; }
+.layers .nm { font-family: var(--mono); font-size: 12px; }
+.layers .dim { color: var(--muted); font-size: 12px; }
+.svgout { font: 12px/1.5 var(--mono); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; overflow-x: auto; white-space: pre; }
+.minis { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.minis figure { margin: 0; text-align: center; font: 11px var(--mono); color: var(--muted); }
+.minis svg { width: 52px; height: 52px; display: block; }
+.verdict { font-size: 14px; }
+.verdict .pill { margin-right: 6px; }
+
+.fig { background: #ffffff; border: 1px solid var(--rule); border-radius: 10px; padding: 8px; margin: 12px 0; }
+.fig img { display: block; width: 100%; height: auto; }
+.cap { font-size: 13px; color: var(--muted); margin: 6px 2px 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin: 8px 0; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
+.icon { border-top: 1px solid var(--rule); padding-top: 14px; margin-top: 18px; }
+.icon h4 { font: 600 15px var(--mono); margin: 0 0 6px; overflow-wrap: anywhere; }
+.stats { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+details { margin: 6px 0; } summary { cursor: pointer; font-size: 14px; color: var(--accent); }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.layerlist { font: 12px/1.6 var(--mono); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; overflow-x: auto; white-space: pre; }
+.big { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0; }
+.big div { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+.big b { display: block; font: 600 1.6rem var(--display); }
+.big span { font-size: 13px; color: var(--muted); }
+</style>
+<div class="wrap">
+  <div class="eyebrow">Variance · research 06 · 27 Nov 2026</div>
+  <h1>Closing the weight gap</h1>
+  <p class="lede">Every icon in research 03 and 05 now rebuilds exactly at the default style. This note works on the next gap: matching a set's other weights without hand fixes. A dot primitive in the fitter, a strict weight test on Phosphor, and a test of whether Google's anchor choice can be predicted.</p>
+  <p class="meta">Follows <a href="https://claude.ai/artifact/CmP4BhXJpdGy1vU6GVh1qE">research 05</a>. Code: <span class="mono">prototype/rebuild/extract.py (dot_part), weights.py, anchor.py</span> in <a href="https://github.com/snds/variance">snds/variance</a>.</p>
+  <div class="answer"><ul>
+<li><strong>Dots are now a primitive.</strong> A dot is a zero-length stroke with round caps,
+  so it grows with the pen. All 540 rebuilds stay exact. Tabler icons with 90%+
+  of ink in rules: 138 → 146 of 150. Research 03 medians: 93% → 95% (Material),
+  96% → 97% (Carbon).</li>
+<li><strong>For a pen-style set, Variance already matches the real weights.</strong> Rebuild
+  only Phosphor regular, change only the pen, compare with Phosphor's own thin,
+  light and bold. Thin and light land within 0.25 px on 95%+ of edges for
+  98–100% of icons. That is as good as a perfect outline offset of the
+  original, so the fitter adds no error.</li>
+<li><strong>What's left in Phosphor bold is Phosphor's own redraws.</strong> 54% of icons pass
+  (an ideal offset: 59%). The rest have parts moved or resized by hand, the same
+  kinds research 04 found in Material.</li>
+<li><strong>Google's anchor choice is partly predictable.</strong> A rule learned from half
+  of Material, tested on the other half, matches 10–13 points more edge length
+  than research 04's context rule at every master (wght 700: 53% → 64%).
+  Icons fully matched at one master go up 2–6×.</li>
+<li><strong>It's about space, not keylines.</strong> Nearly all of the gain comes from
+  measuring the room in front of and behind each stroke exactly, instead of in
+  buckets. Position in the icon and the 20 px live area add about 1 point.</li>
+</ul></div>
+  <h2>Dot primitive</h2>
+<p>A round component no wider than about two strokes is fitted as a dot: a
+stroke of zero length with round caps. A dot drawn larger than the stroke
+keeps the difference (<code>extra</code>), so it still follows the pen. Round holes of
+the same size become knockout dots.</p>
+<div class="grid-wrap"><table>
+<thead>
+<tr>
+<th>Set</th>
+<th>90%+ rules before</th>
+<th>after</th>
+<th>Exact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lucide (150)</td>
+<td class="num">149</td>
+<td class="num">149</td>
+<td class="num">150</td>
+</tr>
+<tr>
+<td>Tabler (150)</td>
+<td class="num">138</td>
+<td class="num">146</td>
+<td class="num">150</td>
+</tr>
+<tr>
+<td>Filled, five sets (200)</td>
+<td class="num">186</td>
+<td class="num">187</td>
+<td class="num">200</td>
+</tr>
+<tr>
+<td>Research 03 (40)</td>
+<td class="num">31</td>
+<td class="num">32</td>
+<td class="num">40</td>
+</tr>
+</tbody>
+</table></div>
+<p>Biggest gains: Tabler <code>grip-vertical</code> 0% → 99.8%, <code>circle-dotted-letter-k</code>
+51% → 99%, Fluent <code>dialpad_question_mark</code> 59% → 96%. No icon lost more than
+4 points.</p>
+<h2>Phosphor weight test</h2>
+<p>104 icons. Rebuild regular from its outline only, set the stroke to
+Phosphor's thin, light or bold pen (8, 12, 24 on its 256 grid), and compare
+with Phosphor's real file. "Ideal offset" grows or shrinks the original
+regular outline evenly: the best any pen-only method can do.</p>
+<div class="grid-wrap"><table>
+<thead>
+<tr>
+<th>Weight</th>
+<th>Variance: icons with 95%+ edges within 0.25 px</th>
+<th>Ideal offset</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thin</td>
+<td class="num">98%</td>
+<td class="num">100%</td>
+</tr>
+<tr>
+<td>Light</td>
+<td class="num">100%</td>
+<td class="num">100%</td>
+</tr>
+<tr>
+<td>Bold</td>
+<td class="num">54%</td>
+<td class="num">59%</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>At the strict default-style test (nothing off by more than 1/20 px), few
+  icons pass even for the ideal offset (thin 20 of 104). Phosphor's own weights
+  aren't exact offsets at that scale, so 0.25 px is the fair bar here.</li>
+<li>Bold misses are designer changes: <code>folders</code> and <code>vibrate</code> move whole parts.
+  Only 6 icons pass with the ideal offset and fail with Variance.</li>
+</ul>
+<h2>Predicting Google's anchors</h2>
+<p>Research 04 measured all 172,000 Material edges at six masters. Here a
+gradient-boosted tree learns each edge's move from what the source knows (its
+context, space in front and behind, stroke thickness, facing, place in the
+icon and the live area, part size). It is trained on half the icons and scored
+on the other half, so it can't memorise an icon.</p>
+<div class="grid-wrap"><table>
+<thead>
+<tr>
+<th>Master</th>
+<th>Edges matched: context rule</th>
+<th>Learned</th>
+<th>Icons fully matched: context rule</th>
+<th>Learned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>wght 100</td>
+<td class="num">52%</td>
+<td class="num">64%</td>
+<td class="num">1%</td>
+<td class="num">6%</td>
+</tr>
+<tr>
+<td>wght 700</td>
+<td class="num">53%</td>
+<td class="num">64%</td>
+<td class="num">2%</td>
+<td class="num">13%</td>
+</tr>
+<tr>
+<td>opsz 20</td>
+<td class="num">57%</td>
+<td class="num">70%</td>
+<td class="num">2%</td>
+<td class="num">15%</td>
+</tr>
+<tr>
+<td>opsz 48</td>
+<td class="num">77%</td>
+<td class="num">85%</td>
+<td class="num">14%</td>
+<td class="num">33%</td>
+</tr>
+<tr>
+<td>GRAD 200</td>
+<td class="num">60%</td>
+<td class="num">71%</td>
+<td class="num">5%</td>
+<td class="num">18%</td>
+</tr>
+<tr>
+<td>GRAD −50</td>
+<td class="num">74%</td>
+<td class="num">87%</td>
+<td class="num">12%</td>
+<td class="num">52%</td>
+</tr>
+</tbody>
+</table></div>
+<p>"Matched" means moving within 0.25 px of Google's master. "Fully matched" =
+95%+ of an icon's edge length matched at that master. These are rule-only
+numbers. Research 04's resize and per-stroke anchor settings still come on
+top.</p>
+<p>What drives it (wght 700, edges matched):</p>
+<div class="grid-wrap"><table>
+<thead>
+<tr>
+<th>Inputs</th>
+<th>Edges</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Research 04 context buckets</td>
+<td class="num">53%</td>
+</tr>
+<tr>
+<td>The same quantities, measured exactly</td>
+<td class="num">62.5%</td>
+</tr>
+<tr>
+<td>+ which way the edge faces</td>
+<td class="num">62.5%</td>
+</tr>
+<tr>
+<td>+ distance to the icon's box and the live area</td>
+<td class="num">63.9%</td>
+</tr>
+<tr>
+<td>+ part size</td>
+<td class="num">64.0%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Google's split depends smoothly on how much room is on each side of a
+stroke. A designer-readable version of the rule is a curve, not a table.</p>
+<h2>What this means for Variance</h2>
+<ul>
+<li><strong>Ship the dot primitive.</strong> It's the last common fitter gap on stroke sets.</li>
+<li><strong>For pen-style sets, weights are solved.</strong> Changing the stroke width of the
+  rebuilt source is as good as it gets. The rest is hand work the set's own
+  designers did, which the override layer holds.</li>
+<li><strong>For anchored sets, replace the bucket table with a learned curve.</strong> Use it
+  as each stroke's default anchor. The per-stroke override stays for the rest
+  and now covers fewer edges.</li>
+<li><strong>Keylines don't explain Google's choices.</strong> Don't build a keyline rule.</li>
+</ul>
+<h2>Next tests</h2>
+<ul>
+<li>Put the learned anchor into the generator as a per-stroke default (a side
+  offset of the centre-line), regenerate the 20 research 03 Material icons at
+  wght 100 and 700, and score against Google.</li>
+<li>Turn the learned rule into a few curves a designer can read and edit.</li>
+<li>Learn Phosphor bold's per-part resizes the same way.</li>
+</ul>
+<h2>Caveats</h2>
+<ul>
+<li>The learned rule is checked on Material only; it is Material's style.</li>
+<li>Phosphor sample: 104 icons. Learned-rule split: by icon, seed 7.</li>
+<li>Code: <code>extract.py</code> (<code>dot_part</code>), <code>weights.py</code>, <code>anchor.py</code> in
+  <code>prototype/rebuild/</code>. Results: <code>weights-phosphor.csv</code>, <code>anchor-material.json</code>.</li>
+</ul>
+  <footer>Material Symbols © Google, Apache 2.0. Phosphor, Tabler, Fluent UI System Icons, Heroicons MIT. Lucide ISC. Remix Icon Apache 2.0. Material's internal construction values are not public; all numbers are measurements of the shipped files.</footer>
+</div>

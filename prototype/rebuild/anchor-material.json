@@ -1,0 +1,74 @@
+{
+ "w100": {
+  "rule": {
+   "edges": 0.5188,
+   "parallel_edges": 0.562,
+   "icons": 0.0134
+  },
+  "learned": {
+   "edges": 0.636,
+   "parallel_edges": 0.689,
+   "icons": 0.0614
+  }
+ },
+ "w700": {
+  "rule": {
+   "edges": 0.5308,
+   "parallel_edges": 0.5634,
+   "icons": 0.0228
+  },
+  "learned": {
+   "edges": 0.6388,
+   "parallel_edges": 0.6781,
+   "icons": 0.1282
+  }
+ },
+ "o20": {
+  "rule": {
+   "edges": 0.5747,
+   "parallel_edges": 0.6151,
+   "icons": 0.0203
+  },
+  "learned": {
+   "edges": 0.6985,
+   "parallel_edges": 0.7476,
+   "icons": 0.146
+  }
+ },
+ "o48": {
+  "rule": {
+   "edges": 0.7714,
+   "parallel_edges": 0.7886,
+   "icons": 0.1366
+  },
+  "learned": {
+   "edges": 0.8482,
+   "parallel_edges": 0.867,
+   "icons": 0.3302
+  }
+ },
+ "g200": {
+  "rule": {
+   "edges": 0.5951,
+   "parallel_edges": 0.6234,
+   "icons": 0.048
+  },
+  "learned": {
+   "edges": 0.7109,
+   "parallel_edges": 0.7447,
+   "icons": 0.1762
+  }
+ },
+ "gm50": {
+  "rule": {
+   "edges": 0.7435,
+   "parallel_edges": 0.7549,
+   "icons": 0.1243
+  },
+  "learned": {
+   "edges": 0.8713,
+   "parallel_edges": 0.8847,
+   "icons": 0.5208
+  }
+ }
+}

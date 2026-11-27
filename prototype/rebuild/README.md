@@ -35,3 +35,6 @@ the same tests on any SVG icon set (research 05).
 | `gtruth.py` | Answer-key test on Lucide/Tabler centre-lines; filled rebuilds |
 | `fig05.py` | Research 05 figures |
 | `anyset-pairs.json`, `anyset-fill.json`, `anyset-rebuilds.csv` | Research 05 outputs |
+| `weights.py` | Research 06: rebuild Phosphor regular, change only the pen, score against thin/light/bold |
+| `anchor.py` | Research 06: learn Material's edge moves (anchor choice) and score on held-out icons |
+| `weights-phosphor.csv`, `anchor-material.json`, `results-dots.json` | Research 06 outputs (results-dots = research 03's 40 icons with the dot primitive) |

@@ -231,6 +231,20 @@ def stroke_parts_from_mask(mask, W, grid, cap, join, prefix):
                       "cap": "butt" if closed else cap, "join": join, "role": None})
     return parts
 
+def dot_part(contour, W, pid, tol=2.0):
+    """A round dot: a stroke of zero length with round caps, so it grows and
+    shrinks with the stroke width exactly as the set's pen does. A dot drawn
+    bigger or smaller than the stroke keeps that difference as `extra`
+    (diameter = width + extra), so it still follows the pen. None if the
+    contour is not a circle up to 2.2 strokes wide. (Research 05: dots
+    were the last big fitter gap on stroke-drawn sets.)"""
+    P = _flat(contour)
+    if len(P) < 8: return None
+    cx, cy, r, err = fit_circle(np.array(P))
+    if err > tol or not (0.25 * W <= r <= 1.1 * W): return None
+    return {"id": pid, "kind": "stroke", "d": f"M{cx:.3f} {cy:.3f} L{cx:.3f} {cy:.3f}", "width": W,
+            "extra": round(2 * r - W, 3), "cap": "round", "join": "round", "align": "center", "role": None, "dot": True}
+
 def rebuild(orig_contours, W, grid=10, cap="square", join="miter", verbose=False):
     import refine as F
     outline = F.Outline(orig_contours)
@@ -238,6 +252,8 @@ def rebuild(orig_contours, W, grid=10, cap="square", join="miter", verbose=False
     omask = mask_of(orig)
     parts = []
     for ci, (outer, holes) in enumerate(components(orig)):
+        dp = dot_part(outer, W, f"dot{ci}") if not holes else None
+        if dp: parts.append(dp); continue
         comp = contours_to_path([outer] + holes)
         cmask = mask_of(comp)
         dist = ndi.distance_transform_edt(cmask)
@@ -248,6 +264,9 @@ def rebuild(orig_contours, W, grid=10, cap="square", join="miter", verbose=False
         else:
             parts.append({"id": f"solid{ci}", "kind": "solid", "d": d_of_contour(outer), "role": None})
             for hi, h in enumerate(holes):
+                kd = dot_part(h, W, f"kdot{ci}_{hi}")
+                if kd:
+                    kd["role"] = {"knockout": True}; parts.append(kd); continue
                 hmask = mask_of(contours_to_path([h]))
                 hd = ndi.distance_transform_edt(hmask)
                 if np.count_nonzero(2 * hd > 1.45 * W) < 0.05 * np.count_nonzero(hmask):
@@ -266,7 +285,7 @@ def rebuild(orig_contours, W, grid=10, cap="square", join="miter", verbose=False
 
 def improve_caps(parts, omask, best):
     for p in parts:
-        if p["kind"] != "stroke" or p["d"].endswith("Z"): continue
+        if p["kind"] != "stroke" or p["d"].endswith("Z") or p.get("dot"): continue
         for cap in ("butt", "round", "square"):
             if cap == p["cap"]: continue
             old = p["cap"]; p["cap"] = cap
@@ -281,7 +300,7 @@ def find_cuts(parts, omask, best, W, verbose=False):
     while improved:
         improved = False
         for i, p in enumerate(parts):
-            if p["kind"] != "stroke" or (p.get("role") or {}).get("knockout") or "cut" in (p.get("role") or {}): continue
+            if p["kind"] != "stroke" or p.get("dot") or (p.get("role") or {}).get("knockout") or "cut" in (p.get("role") or {}): continue
             trial_best = None
             for g in gaps:
                 for side in ("both", "left", "right"):
