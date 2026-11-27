@@ -38,3 +38,4 @@ the same tests on any SVG icon set (research 05).
 | `weights.py` | Research 06: rebuild Phosphor regular, change only the pen, score against thin/light/bold |
 | `anchor.py` | Research 06: learn Material's edge moves (anchor choice) and score on held-out icons |
 | `weights-phosphor.csv`, `anchor-material.json`, `results-dots.json` | Research 06 outputs (results-dots = research 03's 40 icons with the dot primitive) |
+| `learned.py`, `learned-material20.json` | Research 07: per-side stroke moves in the generator (learned rule vs table vs centred), scored on research 03's 20 Material icons |

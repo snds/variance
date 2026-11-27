@@ -21,6 +21,7 @@ Research phase. See [docs/research](docs/research/) and the [decision log](docs/
 | [04 · Correction fingerprints](docs/research/04-correction-fingerprints.md) | Every edge of all 4,004 Material Symbols across six masters: rules, five fix kinds, and the redraw list. [HTML](docs/research/04-correction-fingerprints.html). |
 | [05 · Any icon set](docs/research/05-any-icon-set.md) | Six more sets (Lucide, Tabler, Phosphor, Fluent, Heroicons, Remix): an answer-key test of the fitter, weight and size patterns, and what FILL does. [HTML](docs/research/05-any-icon-set.html). |
 | [06 · Closing the weight gap](docs/research/06-closing-the-weight-gap.md) | Dot primitive, a pen-only weight test on Phosphor, and a learned anchor rule for Material. [HTML](docs/research/06-closing-the-weight-gap.html). |
+| [07 · Anchors in the generator](docs/research/07-anchors-in-the-generator.md) | The learned anchor rule built into the generator, scored on the 20 hardest Material icons at wght 100 and 700. [HTML](docs/research/07-anchors-in-the-generator.html). |
 
 ## Prototype
 

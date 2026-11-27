@@ -45,9 +45,63 @@ def stroke_path(d, width, cap="butt", join="miter", align="center", miter=10):
     return pathops.op(s, inside, op)
 
 def part_shape(part, width=None):
-    if part["kind"] == "solid": return fill(path_from_d(part["d"]))
+    if part["kind"] == "solid":
+        s = fill(path_from_d(part["d"]))
+        return grow(s, part["grow"]) if part.get("grow") else s
     w = (width or part["width"]) + part.get("extra", 0)   # extra: a dot drawn wider than the stroke
-    return stroke_path(part["d"], w, part.get("cap", "butt"), part.get("join", "miter"), part.get("align", "center"))
+    d = offset_d(part["d"], part["offset"]) if part.get("offset") else part["d"]
+    return stroke_path(d, w, part.get("cap", "butt"), part.get("join", "miter"), part.get("align", "center"))
+
+def grow(shape, d):
+    """Every edge of a filled shape moves d units (+ out, - in)."""
+    s = pathops.Path(); shape.draw(s.getPen()); s.stroke(2 * abs(d), CAP["butt"], JOIN["round"], 4); s = fill(s)
+    return op(shape, s, pathops.PathOp.UNION if d > 0 else pathops.PathOp.DIFFERENCE)
+
+def offset_d(d, off, steps=32):
+    """The centre-line shifted sideways by `off` units (+ = to its left).
+    Used when the two sides of a stroke move by different amounts: the
+    stroke's anchor (research 07). Each segment is offset along its own
+    normals; where two segments meet at a corner, the two offset lines are
+    met at their intersection (a mitred offset), so corners don't spike."""
+    def bez(seg, tt):
+        p0, c1, c2, p3 = seg; mt = 1 - tt
+        return tuple(mt**3 * a + 3 * mt * mt * tt * b + 3 * mt * tt * tt * e + tt**3 * g for a, b, e, g in zip(p0, c1, c2, p3))
+    def tan(seg, tt):
+        e = 1e-4; a, b = bez(seg, max(0, tt - e)), bez(seg, min(1, tt + e))
+        dx, dy = b[0] - a[0], b[1] - a[1]; L = math.hypot(dx, dy)
+        return (dx / L, dy / L) if L > 1e-12 else None
+    def inter(p, u, q, v):
+        den = u[0] * v[1] - u[1] * v[0]
+        if abs(den) < 1e-6: return None
+        s = ((q[0] - p[0]) * v[1] - (q[1] - p[1]) * v[0]) / den
+        return (p[0] + u[0] * s, p[1] + u[1] * s)
+    out = []
+    for c in to_contours(path_from_d(d)):
+        c = [s for s in c if math.dist(s[0], s[3]) > 1e-6 or math.dist(s[0], s[1]) > 1e-6]
+        if not c: continue
+        closed = math.dist(c[0][0], c[-1][3]) < 1e-6
+        pieces = []
+        for seg in c:
+            pts = []
+            for i in range(steps + 1):
+                tt = i / steps; tg = tan(seg, tt)
+                if tg is None: continue
+                p = bez(seg, tt); pts.append((p[0] - tg[1] * off, p[1] + tg[0] * off, tg))
+            if len(pts) >= 2: pieces.append(pts)
+        if not pieces: continue
+        joined = [list(pieces[0])]
+        for pc in pieces[1:] + ([pieces[0]] if closed else []):
+            prev = joined[-1]; a, b = prev[-1], pc[0]
+            if math.dist(a[:2], b[:2]) > 1e-3:
+                x = inter(a[:2], a[2], b[:2], b[2])
+                if x is not None and math.dist(x, a[:2]) < 4 * abs(off) + 1:
+                    prev[-1] = (x[0], x[1], a[2]); pc = [(x[0], x[1], b[2])] + pc[1:]
+            joined.append(list(pc))
+        if closed:   # the first piece was appended again to close the corner; fold it back
+            first = joined.pop(); joined[0][0] = first[0]
+        pts = [(p[0], p[1]) for pc in joined for p in pc]
+        out.append("M" + " L".join(f"{x:.3f} {y:.3f}" for x, y in pts) + (" Z" if closed else ""))
+    return " ".join(out)
 
 def _rounded(p, q=1/16):
     """Copy of a path with coordinates on a 1/16-unit grid. Skia's boolean
@@ -60,9 +114,14 @@ def _rounded(p, q=1/16):
     return r
 
 def op(a, b, kind):
+    """Boolean with fallbacks: exact, then inputs snapped to 1/16, 1/4 and
+    1 unit. Skia gives up on some near-coincident or self-crossing edges."""
     try: return pathops.op(a, b, kind)
-    except pathops.PathOpsError:
-        return pathops.op(_rounded(a), _rounded(b), kind)
+    except pathops.PathOpsError: pass
+    for q in (1 / 16, 1 / 4, 1):
+        try: return pathops.op(_rounded(a, q), _rounded(b, q), kind)
+        except pathops.PathOpsError: continue
+    raise pathops.PathOpsError("operation did not succeed")
 
 def generate(parts):
     ink = pathops.Path()
