@@ -223,6 +223,9 @@ summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </ul>
 <h2>Caveats</h2>
 <ul>
+<li>Research 08 found two measuring bugs behind these numbers (the edge search
+  and flipped edge normals). Corrected and finer results are in
+  <a href="08-toward-100.md">research 08</a>.</li>
 <li>The learned rule was trained on all Material icons except these 20.</li>
 <li>The score covers edges only (within 0.25 px). It doesn't check that the
   masters stay point-compatible; that is a separate step.</li>

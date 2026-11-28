@@ -39,3 +39,6 @@ the same tests on any SVG icon set (research 05).
 | `anchor.py` | Research 06: learn Material's edge moves (anchor choice) and score on held-out icons |
 | `weights-phosphor.csv`, `anchor-material.json`, `results-dots.json` | Research 06 outputs (results-dots = research 03's 40 icons with the dot primitive) |
 | `learned.py`, `learned-material20.json` | Research 07: per-side stroke moves in the generator (learned rule vs table vs centred), scored on research 03's 20 Material icons |
+| `segments.py`, `segments-material20.json` | Research 08: per-segment side moves, end moves and solid/patch edge moves, with Google's own moves and the learned rule, plus where the remaining miss sits |
+| `orient.py` | Research 08: corrects research 04's edge table so every normal points out of the ink (13% of edges were flipped) |
+| `segments9-material20.json`, `density.py` | Research 09: all six masters (table, fit to Google's drawing, angled ends, learned rule); `segments.py nine` runs it. `density.py` adds ink-density inputs for the rule |
