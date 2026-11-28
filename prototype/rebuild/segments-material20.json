@@ -1,0 +1,1533 @@
+{
+ "assignment_globe": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.8693
+   },
+   "best stroke": {
+    "edges": 0.9051
+   },
+   "best segment": {
+    "edges": 0.9196
+   },
+   "best ends": {
+    "edges": 0.9417
+   },
+   "best solids": {
+    "edges": 0.9417,
+    "blame": {
+     "stroke": 21,
+     "stroke end": 152,
+     "patch": 36
+    },
+    "edge_px": 3582
+   },
+   "learned stroke07": {
+    "edges": 0.8897
+   },
+   "learned stroke": {
+    "edges": 0.8763
+   },
+   "learned segment": {
+    "edges": 0.8693
+   },
+   "learned ends": {
+    "edges": 0.8883
+   },
+   "learned solids": {
+    "edges": 0.8744
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.6297
+   },
+   "best stroke": {
+    "edges": 0.7437
+   },
+   "best segment": {
+    "edges": 0.7749
+   },
+   "best ends": {
+    "edges": 0.7997
+   },
+   "best solids": {
+    "edges": 0.8127,
+    "blame": {
+     "stroke end": 534,
+     "patch": 233,
+     "stroke": 26
+    },
+    "edge_px": 4234
+   },
+   "learned stroke07": {
+    "edges": 0.5735
+   },
+   "learned stroke": {
+    "edges": 0.5735
+   },
+   "learned segment": {
+    "edges": 0.6186
+   },
+   "learned ends": {
+    "edges": 0.6155
+   },
+   "learned solids": {
+    "edges": 0.6129
+   }
+  }
+ },
+ "keyboard_lock": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.591
+   },
+   "best stroke": {
+    "edges": 0.591
+   },
+   "best segment": {
+    "edges": 0.5898
+   },
+   "best ends": {
+    "edges": 0.5967
+   },
+   "best solids": {
+    "edges": 0.9734,
+    "blame": {
+     "stroke end": 5,
+     "patch": 44,
+     "solid": 44
+    },
+    "edge_px": 3496
+   },
+   "learned stroke07": {
+    "edges": 0.5495
+   },
+   "learned stroke": {
+    "edges": 0.5495
+   },
+   "learned segment": {
+    "edges": 0.5512
+   },
+   "learned ends": {
+    "edges": 0.5481
+   },
+   "learned solids": {
+    "edges": 0.7752
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.8482
+   },
+   "best stroke": {
+    "edges": 0.8482
+   },
+   "best segment": {
+    "edges": 0.8482
+   },
+   "best ends": {
+    "edges": 0.8544
+   },
+   "best solids": {
+    "edges": 0.981,
+    "blame": {
+     "patch": 34,
+     "stroke end": 39,
+     "solid": 15
+    },
+    "edge_px": 4637
+   },
+   "learned stroke07": {
+    "edges": 0.5568
+   },
+   "learned stroke": {
+    "edges": 0.4451
+   },
+   "learned segment": {
+    "edges": 0.6435
+   },
+   "learned ends": {
+    "edges": 0.6306
+   },
+   "learned solids": {
+    "edges": 0.6802
+   }
+  }
+ },
+ "deselect": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.6766
+   },
+   "best stroke": {
+    "edges": 0.7137
+   },
+   "best segment": {
+    "edges": 0.7053
+   },
+   "best ends": {
+    "edges": 0.7072
+   },
+   "best solids": {
+    "edges": 0.9212,
+    "blame": {
+     "patch": 71,
+     "stroke end": 135
+    },
+    "edge_px": 2613
+   },
+   "learned stroke07": {
+    "edges": 0.4975
+   },
+   "learned stroke": {
+    "edges": 0.4677
+   },
+   "learned segment": {
+    "edges": 0.4623
+   },
+   "learned ends": {
+    "edges": 0.4707
+   },
+   "learned solids": {
+    "edges": 0.6659
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.2152
+   },
+   "best stroke": {
+    "edges": 0.2474
+   },
+   "best segment": {
+    "edges": 0.2611
+   },
+   "best ends": {
+    "edges": 0.2862
+   },
+   "best solids": {
+    "edges": 0.889,
+    "blame": {
+     "stroke end": 182,
+     "stroke": 95,
+     "patch": 258
+    },
+    "edge_px": 4818
+   },
+   "learned stroke07": {
+    "edges": 0.2262
+   },
+   "learned stroke": {
+    "edges": 0.2553
+   },
+   "learned segment": {
+    "edges": 0.2609
+   },
+   "learned ends": {
+    "edges": 0.2677
+   },
+   "learned solids": {
+    "edges": 0.7615
+   }
+  }
+ },
+ "supervised_user_circle_off": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.5278
+   },
+   "best stroke": {
+    "edges": 0.6699
+   },
+   "best segment": {
+    "edges": 0.6905
+   },
+   "best ends": {
+    "edges": 0.6905
+   },
+   "best solids": {
+    "edges": 0.8707,
+    "blame": {
+     "stroke end": 5,
+     "patch": 13,
+     "solid": 90,
+     "knockout stroke end": 264,
+     "knockout stroke": 12
+    },
+    "edge_px": 2969
+   },
+   "learned stroke07": {
+    "edges": 0.5628
+   },
+   "learned stroke": {
+    "edges": 0.6986
+   },
+   "learned segment": {
+    "edges": 0.706
+   },
+   "learned ends": {
+    "edges": 0.706
+   },
+   "learned solids": {
+    "edges": 0.7676
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.6838
+   },
+   "best stroke": {
+    "edges": 0.7313
+   },
+   "best segment": {
+    "edges": 0.725
+   },
+   "best ends": {
+    "edges": 0.725
+   },
+   "best solids": {
+    "edges": 0.9254,
+    "blame": {
+     "stroke end": 31,
+     "patch": 70,
+     "knockout stroke end": 136
+    },
+    "edge_px": 3175
+   },
+   "learned stroke07": {
+    "edges": 0.6756
+   },
+   "learned stroke": {
+    "edges": 0.5575
+   },
+   "learned segment": {
+    "edges": 0.6192
+   },
+   "learned ends": {
+    "edges": 0.6192
+   },
+   "learned solids": {
+    "edges": 0.7663
+   }
+  }
+ },
+ "hdr_plus_off": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.7886
+   },
+   "best stroke": {
+    "edges": 0.8504
+   },
+   "best segment": {
+    "edges": 0.8881
+   },
+   "best ends": {
+    "edges": 0.8964
+   },
+   "best solids": {
+    "edges": 0.9021,
+    "blame": {
+     "stroke end": 294,
+     "stroke": 44,
+     "patch": 39
+    },
+    "edge_px": 3850
+   },
+   "learned stroke07": {
+    "edges": 0.7535
+   },
+   "learned stroke": {
+    "edges": 0.8571
+   },
+   "learned segment": {
+    "edges": 0.7855
+   },
+   "learned ends": {
+    "edges": 0.7855
+   },
+   "learned solids": {
+    "edges": 0.7917
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.7843
+   },
+   "best stroke": {
+    "edges": 0.7967
+   },
+   "best segment": {
+    "edges": 0.8827
+   },
+   "best ends": {
+    "edges": 0.9011
+   },
+   "best solids": {
+    "edges": 0.9011,
+    "blame": {
+     "stroke end": 282,
+     "patch": 59,
+     "stroke": 24
+    },
+    "edge_px": 3690
+   },
+   "learned stroke07": {
+    "edges": 0.5612
+   },
+   "learned stroke": {
+    "edges": 0.6057
+   },
+   "learned segment": {
+    "edges": 0.616
+   },
+   "learned ends": {
+    "edges": 0.6087
+   },
+   "learned solids": {
+    "edges": 0.6138
+   }
+  }
+ },
+ "fingerprint_off": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.9402
+   },
+   "best stroke": {
+    "edges": 0.9426
+   },
+   "best segment": {
+    "edges": 0.9433
+   },
+   "best ends": {
+    "edges": 0.9433
+   },
+   "best solids": {
+    "edges": 0.9402,
+    "blame": {
+     "patch": 33,
+     "stroke end": 80,
+     "stroke": 158
+    },
+    "edge_px": 4531
+   },
+   "learned stroke07": {
+    "edges": 0.6815
+   },
+   "learned stroke": {
+    "edges": 0.7875
+   },
+   "learned segment": {
+    "edges": 0.7853
+   },
+   "learned ends": {
+    "edges": 0.7853
+   },
+   "learned solids": {
+    "edges": 0.6021
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.7036
+   },
+   "best stroke": {
+    "edges": 0.7049
+   },
+   "best segment": {
+    "edges": 0.6964
+   },
+   "best ends": {
+    "edges": 0.6964
+   },
+   "best solids": {
+    "edges": 0.9069,
+    "blame": {
+     "patch": 332,
+     "stroke end": 47,
+     "stroke": 26,
+     "solid": 12
+    },
+    "edge_px": 4480
+   },
+   "learned stroke07": {
+    "edges": 0.5904
+   },
+   "learned stroke": {
+    "edges": 0.6234
+   },
+   "learned segment": {
+    "edges": 0.6221
+   },
+   "learned ends": {
+    "edges": 0.6221
+   },
+   "learned solids": {
+    "edges": 0.4295
+   }
+  }
+ },
+ "repeat_one_on": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.6947
+   },
+   "best stroke": {
+    "edges": 0.9592
+   },
+   "best segment": {
+    "edges": 0.9287
+   },
+   "best ends": {
+    "edges": 0.9492
+   },
+   "best solids": {
+    "edges": 0.9492,
+    "blame": {
+     "patch": 24,
+     "knockout stroke end": 157,
+     "knockout stroke": 2
+    },
+    "edge_px": 3603
+   },
+   "learned stroke07": {
+    "edges": 0.6947
+   },
+   "learned stroke": {
+    "edges": 0.4294
+   },
+   "learned segment": {
+    "edges": 0.4313
+   },
+   "learned ends": {
+    "edges": 0.4249
+   },
+   "learned solids": {
+    "edges": 0.4249
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.6799
+   },
+   "best stroke": {
+    "edges": 0.898
+   },
+   "best segment": {
+    "edges": 0.9228
+   },
+   "best ends": {
+    "edges": 0.9306
+   },
+   "best solids": {
+    "edges": 0.9306,
+    "blame": {
+     "knockout stroke end": 98,
+     "patch": 109,
+     "knockout stroke": 84
+    },
+    "edge_px": 4195
+   },
+   "learned stroke07": {
+    "edges": 0.6799
+   },
+   "learned stroke": {
+    "edges": 0.5514
+   },
+   "learned segment": {
+    "edges": 0.5235
+   },
+   "learned ends": {
+    "edges": 0.5275
+   },
+   "learned solids": {
+    "edges": 0.5275
+   }
+  }
+ },
+ "shuffle_on": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.8831
+   },
+   "best stroke": {
+    "edges": 0.9409
+   },
+   "best segment": {
+    "edges": 0.9645
+   },
+   "best ends": {
+    "edges": 0.9824
+   },
+   "best solids": {
+    "edges": 0.9824,
+    "blame": {
+     "knockout stroke end": 53
+    },
+    "edge_px": 3010
+   },
+   "learned stroke07": {
+    "edges": 0.8831
+   },
+   "learned stroke": {
+    "edges": 0.511
+   },
+   "learned segment": {
+    "edges": 0.511
+   },
+   "learned ends": {
+    "edges": 0.511
+   },
+   "learned solids": {
+    "edges": 0.511
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.7391
+   },
+   "best stroke": {
+    "edges": 0.8746
+   },
+   "best segment": {
+    "edges": 0.8829
+   },
+   "best ends": {
+    "edges": 0.9064
+   },
+   "best solids": {
+    "edges": 0.9064,
+    "blame": {
+     "knockout stroke end": 351
+    },
+    "edge_px": 3749
+   },
+   "learned stroke07": {
+    "edges": 0.7391
+   },
+   "learned stroke": {
+    "edges": 0.534
+   },
+   "learned segment": {
+    "edges": 0.5327
+   },
+   "learned ends": {
+    "edges": 0.5444
+   },
+   "learned solids": {
+    "edges": 0.5444
+   }
+  }
+ },
+ "poker_chip": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.9952
+   },
+   "best stroke": {
+    "edges": 0.9952
+   },
+   "best segment": {
+    "edges": 0.9952
+   },
+   "best ends": {
+    "edges": 0.9952
+   },
+   "best solids": {
+    "edges": 0.9952,
+    "blame": {
+     "stroke end": 18
+    },
+    "edge_px": 3789
+   },
+   "learned stroke07": {
+    "edges": 0.9443
+   },
+   "learned stroke": {
+    "edges": 0.9332
+   },
+   "learned segment": {
+    "edges": 0.9375
+   },
+   "learned ends": {
+    "edges": 0.9375
+   },
+   "learned solids": {
+    "edges": 0.9369
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.878
+   },
+   "best stroke": {
+    "edges": 0.8786
+   },
+   "best segment": {
+    "edges": 1.0
+   },
+   "best ends": {
+    "edges": 1.0
+   },
+   "best solids": {
+    "edges": 1.0,
+    "blame": {},
+    "edge_px": 3509
+   },
+   "learned stroke07": {
+    "edges": 0.5529
+   },
+   "learned stroke": {
+    "edges": 0.5423
+   },
+   "learned segment": {
+    "edges": 0.5614
+   },
+   "learned ends": {
+    "edges": 0.5614
+   },
+   "learned solids": {
+    "edges": 0.5614
+   }
+  }
+ },
+ "yoshoku": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.9607
+   },
+   "best stroke": {
+    "edges": 0.959
+   },
+   "best segment": {
+    "edges": 0.9638
+   },
+   "best ends": {
+    "edges": 0.9638
+   },
+   "best solids": {
+    "edges": 0.9638,
+    "blame": {
+     "stroke end": 129,
+     "patch": 22
+    },
+    "edge_px": 4172
+   },
+   "learned stroke07": {
+    "edges": 0.9521
+   },
+   "learned stroke": {
+    "edges": 0.9509
+   },
+   "learned segment": {
+    "edges": 0.9427
+   },
+   "learned ends": {
+    "edges": 0.9439
+   },
+   "learned solids": {
+    "edges": 0.9439
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.9239
+   },
+   "best stroke": {
+    "edges": 0.9427
+   },
+   "best segment": {
+    "edges": 0.9591
+   },
+   "best ends": {
+    "edges": 0.9593
+   },
+   "best solids": {
+    "edges": 0.9593,
+    "blame": {
+     "stroke": 157,
+     "stroke end": 19
+    },
+    "edge_px": 4326
+   },
+   "learned stroke07": {
+    "edges": 0.6563
+   },
+   "learned stroke": {
+    "edges": 0.6902
+   },
+   "learned segment": {
+    "edges": 0.7779
+   },
+   "learned ends": {
+    "edges": 0.7781
+   },
+   "learned solids": {
+    "edges": 0.7781
+   }
+  }
+ },
+ "swap_driving_apps_wheel": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.8909
+   },
+   "best stroke": {
+    "edges": 0.9783
+   },
+   "best segment": {
+    "edges": 0.9783
+   },
+   "best ends": {
+    "edges": 0.9776
+   },
+   "best solids": {
+    "edges": 0.9776,
+    "blame": {
+     "stroke end": 27,
+     "patch": 36
+    },
+    "edge_px": 2815
+   },
+   "learned stroke07": {
+    "edges": 0.8902
+   },
+   "learned stroke": {
+    "edges": 0.9762
+   },
+   "learned segment": {
+    "edges": 0.9609
+   },
+   "learned ends": {
+    "edges": 0.9599
+   },
+   "learned solids": {
+    "edges": 0.9599
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.8773
+   },
+   "best stroke": {
+    "edges": 0.9839
+   },
+   "best segment": {
+    "edges": 0.9839
+   },
+   "best ends": {
+    "edges": 0.9839
+   },
+   "best solids": {
+    "edges": 0.9839,
+    "blame": {
+     "patch": 50
+    },
+    "edge_px": 3114
+   },
+   "learned stroke07": {
+    "edges": 0.8166
+   },
+   "learned stroke": {
+    "edges": 0.886
+   },
+   "learned segment": {
+    "edges": 0.8349
+   },
+   "learned ends": {
+    "edges": 0.8349
+   },
+   "learned solids": {
+    "edges": 0.8349
+   }
+  }
+ },
+ "theater_comedy": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.6133
+   },
+   "best stroke": {
+    "edges": 0.6145
+   },
+   "best segment": {
+    "edges": 0.7802
+   },
+   "best ends": {
+    "edges": 0.7802
+   },
+   "best solids": {
+    "edges": 0.7802,
+    "blame": {
+     "stroke": 72,
+     "dot": 228,
+     "stroke end": 383
+    },
+    "edge_px": 3108
+   },
+   "learned stroke07": {
+    "edges": 0.4321
+   },
+   "learned stroke": {
+    "edges": 0.5901
+   },
+   "learned segment": {
+    "edges": 0.6577
+   },
+   "learned ends": {
+    "edges": 0.6577
+   },
+   "learned solids": {
+    "edges": 0.6577
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.3914
+   },
+   "best stroke": {
+    "edges": 0.4123
+   },
+   "best segment": {
+    "edges": 0.7428
+   },
+   "best ends": {
+    "edges": 0.7428
+   },
+   "best solids": {
+    "edges": 0.7428,
+    "blame": {
+     "stroke": 325,
+     "dot": 400,
+     "stroke end": 285
+    },
+    "edge_px": 3927
+   },
+   "learned stroke07": {
+    "edges": 0.3568
+   },
+   "learned stroke": {
+    "edges": 0.2944
+   },
+   "learned segment": {
+    "edges": 0.3046
+   },
+   "learned ends": {
+    "edges": 0.3046
+   },
+   "learned solids": {
+    "edges": 0.3046
+   }
+  }
+ },
+ "emoji_language": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.7304
+   },
+   "best stroke": {
+    "edges": 0.7556
+   },
+   "best segment": {
+    "edges": 0.918
+   },
+   "best ends": {
+    "edges": 0.918
+   },
+   "best solids": {
+    "edges": 0.918,
+    "blame": {
+     "dot": 73,
+     "stroke end": 125,
+     "stroke": 95
+    },
+    "edge_px": 3572
+   },
+   "learned stroke07": {
+    "edges": 0.7038
+   },
+   "learned stroke": {
+    "edges": 0.7242
+   },
+   "learned segment": {
+    "edges": 0.8382
+   },
+   "learned ends": {
+    "edges": 0.8382
+   },
+   "learned solids": {
+    "edges": 0.8382
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.6625
+   },
+   "best stroke": {
+    "edges": 0.7073
+   },
+   "best segment": {
+    "edges": 0.868
+   },
+   "best ends": {
+    "edges": 0.8702
+   },
+   "best solids": {
+    "edges": 0.8702,
+    "blame": {
+     "dot": 91,
+     "stroke end": 293,
+     "stroke": 79
+    },
+    "edge_px": 3567
+   },
+   "learned stroke07": {
+    "edges": 0.5705
+   },
+   "learned stroke": {
+    "edges": 0.5907
+   },
+   "learned segment": {
+    "edges": 0.704
+   },
+   "learned ends": {
+    "edges": 0.7065
+   },
+   "learned solids": {
+    "edges": 0.7065
+   }
+  }
+ },
+ "prescriptions": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.8872
+   },
+   "best stroke": {
+    "edges": 0.8824
+   },
+   "best segment": {
+    "edges": 0.9554
+   },
+   "best ends": {
+    "edges": 0.9607
+   },
+   "best solids": {
+    "edges": 0.9607,
+    "blame": {
+     "stroke": 103,
+     "stroke end": 38
+    },
+    "edge_px": 3589
+   },
+   "learned stroke07": {
+    "edges": 0.808
+   },
+   "learned stroke": {
+    "edges": 0.7704
+   },
+   "learned segment": {
+    "edges": 0.8317
+   },
+   "learned ends": {
+    "edges": 0.8381
+   },
+   "learned solids": {
+    "edges": 0.8381
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.5634
+   },
+   "best stroke": {
+    "edges": 0.6711
+   },
+   "best segment": {
+    "edges": 0.8437
+   },
+   "best ends": {
+    "edges": 0.8844
+   },
+   "best solids": {
+    "edges": 0.8844,
+    "blame": {
+     "stroke": 149,
+     "stroke end": 293
+    },
+    "edge_px": 3825
+   },
+   "learned stroke07": {
+    "edges": 0.6227
+   },
+   "learned stroke": {
+    "edges": 0.5956
+   },
+   "learned segment": {
+    "edges": 0.6107
+   },
+   "learned ends": {
+    "edges": 0.6026
+   },
+   "learned solids": {
+    "edges": 0.6026
+   }
+  }
+ },
+ "order_approve": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.8968
+   },
+   "best stroke": {
+    "edges": 0.9011
+   },
+   "best segment": {
+    "edges": 0.9211
+   },
+   "best ends": {
+    "edges": 0.9484
+   },
+   "best solids": {
+    "edges": 0.9484,
+    "blame": {
+     "stroke end": 105,
+     "knockout stroke end": 25,
+     "stroke": 40
+    },
+    "edge_px": 3296
+   },
+   "learned stroke07": {
+    "edges": 0.8392
+   },
+   "learned stroke": {
+    "edges": 0.8028
+   },
+   "learned segment": {
+    "edges": 0.835
+   },
+   "learned ends": {
+    "edges": 0.8547
+   },
+   "learned solids": {
+    "edges": 0.8586
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.7113
+   },
+   "best stroke": {
+    "edges": 0.7241
+   },
+   "best segment": {
+    "edges": 0.7434
+   },
+   "best ends": {
+    "edges": 0.7749
+   },
+   "best solids": {
+    "edges": 0.8727,
+    "blame": {
+     "stroke end": 280,
+     "knockout stroke end": 82,
+     "stroke": 172
+    },
+    "edge_px": 4194
+   },
+   "learned stroke07": {
+    "edges": 0.5963
+   },
+   "learned stroke": {
+    "edges": 0.6009
+   },
+   "learned segment": {
+    "edges": 0.6109
+   },
+   "learned ends": {
+    "edges": 0.6254
+   },
+   "learned solids": {
+    "edges": 0.635
+   }
+  }
+ },
+ "desktop_cloud_stack": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.7951
+   },
+   "best stroke": {
+    "edges": 0.9278
+   },
+   "best segment": {
+    "edges": 0.9783
+   },
+   "best ends": {
+    "edges": 0.9787
+   },
+   "best solids": {
+    "edges": 0.9787,
+    "blame": {
+     "stroke": 1,
+     "stroke end": 90
+    },
+    "edge_px": 4281
+   },
+   "learned stroke07": {
+    "edges": 0.5319
+   },
+   "learned stroke": {
+    "edges": 0.6802
+   },
+   "learned segment": {
+    "edges": 0.8825
+   },
+   "learned ends": {
+    "edges": 0.883
+   },
+   "learned solids": {
+    "edges": 0.883
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.2299
+   },
+   "best stroke": {
+    "edges": 0.4345
+   },
+   "best segment": {
+    "edges": 0.7817
+   },
+   "best ends": {
+    "edges": 0.8079
+   },
+   "best solids": {
+    "edges": 0.8079,
+    "blame": {
+     "stroke end": 214,
+     "stroke": 651
+    },
+    "edge_px": 4502
+   },
+   "learned stroke07": {
+    "edges": 0.3683
+   },
+   "learned stroke": {
+    "edges": 0.6566
+   },
+   "learned segment": {
+    "edges": 0.6515
+   },
+   "learned ends": {
+    "edges": 0.6535
+   },
+   "learned solids": {
+    "edges": 0.6535
+   }
+  }
+ },
+ "dataset_linked": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.8602
+   },
+   "best stroke": {
+    "edges": 0.8668
+   },
+   "best segment": {
+    "edges": 0.8722
+   },
+   "best ends": {
+    "edges": 0.9275
+   },
+   "best solids": {
+    "edges": 0.9275,
+    "blame": {
+     "stroke end": 240
+    },
+    "edge_px": 3311
+   },
+   "learned stroke07": {
+    "edges": 0.7608
+   },
+   "learned stroke": {
+    "edges": 0.7668
+   },
+   "learned segment": {
+    "edges": 0.7668
+   },
+   "learned ends": {
+    "edges": 0.7825
+   },
+   "learned solids": {
+    "edges": 0.7825
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.5041
+   },
+   "best stroke": {
+    "edges": 0.5657
+   },
+   "best segment": {
+    "edges": 0.7126
+   },
+   "best ends": {
+    "edges": 0.7833
+   },
+   "best solids": {
+    "edges": 0.7833,
+    "blame": {
+     "stroke end": 800,
+     "stroke": 160
+    },
+    "edge_px": 4430
+   },
+   "learned stroke07": {
+    "edges": 0.5445
+   },
+   "learned stroke": {
+    "edges": 0.5506
+   },
+   "learned segment": {
+    "edges": 0.6126
+   },
+   "learned ends": {
+    "edges": 0.6481
+   },
+   "learned solids": {
+    "edges": 0.6481
+   }
+  }
+ },
+ "padel": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.6606
+   },
+   "best stroke": {
+    "edges": 0.7204
+   },
+   "best segment": {
+    "edges": 0.9108
+   },
+   "best ends": {
+    "edges": 0.9113
+   },
+   "best solids": {
+    "edges": 0.9113,
+    "blame": {
+     "stroke": 74,
+     "dot": 137
+    },
+    "edge_px": 2378
+   },
+   "learned stroke07": {
+    "edges": 0.5055
+   },
+   "learned stroke": {
+    "edges": 0.6405
+   },
+   "learned segment": {
+    "edges": 0.7468
+   },
+   "learned ends": {
+    "edges": 0.7481
+   },
+   "learned solids": {
+    "edges": 0.7481
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.4724
+   },
+   "best stroke": {
+    "edges": 0.7508
+   },
+   "best segment": {
+    "edges": 0.9113
+   },
+   "best ends": {
+    "edges": 0.9113
+   },
+   "best solids": {
+    "edges": 0.9113,
+    "blame": {
+     "stroke": 267
+    },
+    "edge_px": 3010
+   },
+   "learned stroke07": {
+    "edges": 0.2571
+   },
+   "learned stroke": {
+    "edges": 0.6282
+   },
+   "learned segment": {
+    "edges": 0.6359
+   },
+   "learned ends": {
+    "edges": 0.6449
+   },
+   "learned solids": {
+    "edges": 0.6449
+   }
+  }
+ },
+ "water_do": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.7529
+   },
+   "best stroke": {
+    "edges": 0.9901
+   },
+   "best segment": {
+    "edges": 0.9901
+   },
+   "best ends": {
+    "edges": 0.9901
+   },
+   "best solids": {
+    "edges": 0.9901,
+    "blame": {
+     "dot": 24
+    },
+    "edge_px": 2428
+   },
+   "learned stroke07": {
+    "edges": 0.7529
+   },
+   "learned stroke": {
+    "edges": 0.883
+   },
+   "learned segment": {
+    "edges": 0.9205
+   },
+   "learned ends": {
+    "edges": 0.9205
+   },
+   "learned solids": {
+    "edges": 0.9205
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.5781
+   },
+   "best stroke": {
+    "edges": 0.8092
+   },
+   "best segment": {
+    "edges": 0.8092
+   },
+   "best ends": {
+    "edges": 0.8092
+   },
+   "best solids": {
+    "edges": 0.8092,
+    "blame": {
+     "stroke": 29,
+     "dot": 528
+    },
+    "edge_px": 2920
+   },
+   "learned stroke07": {
+    "edges": 0.5791
+   },
+   "learned stroke": {
+    "edges": 0.7849
+   },
+   "learned segment": {
+    "edges": 0.787
+   },
+   "learned ends": {
+    "edges": 0.787
+   },
+   "learned solids": {
+    "edges": 0.787
+   }
+  }
+ },
+ "notifications_off": {
+  "w100": {
+   "best stroke07": {
+    "edges": 0.8788
+   },
+   "best stroke": {
+    "edges": 0.8993
+   },
+   "best segment": {
+    "edges": 0.9045
+   },
+   "best ends": {
+    "edges": 0.9219
+   },
+   "best solids": {
+    "edges": 0.9219,
+    "blame": {
+     "stroke end": 179
+    },
+    "edge_px": 2293
+   },
+   "learned stroke07": {
+    "edges": 0.4876
+   },
+   "learned stroke": {
+    "edges": 0.4479
+   },
+   "learned segment": {
+    "edges": 0.4666
+   },
+   "learned ends": {
+    "edges": 0.4714
+   },
+   "learned solids": {
+    "edges": 0.4714
+   }
+  },
+  "w700": {
+   "best stroke07": {
+    "edges": 0.7009
+   },
+   "best stroke": {
+    "edges": 0.787
+   },
+   "best segment": {
+    "edges": 0.8554
+   },
+   "best ends": {
+    "edges": 0.876
+   },
+   "best solids": {
+    "edges": 0.876,
+    "blame": {
+     "stroke end": 288,
+     "stroke": 13
+    },
+    "edge_px": 2427
+   },
+   "learned stroke07": {
+    "edges": 0.5377
+   },
+   "learned stroke": {
+    "edges": 0.5933
+   },
+   "learned segment": {
+    "edges": 0.5826
+   },
+   "learned ends": {
+    "edges": 0.6213
+   },
+   "learned solids": {
+    "edges": 0.6213
+   }
+  }
+ }
+}
