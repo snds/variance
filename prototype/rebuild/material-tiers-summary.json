@@ -1,0 +1,58 @@
+{
+ "glyphs": 4004,
+ "all_auto_90": 69,
+ "needs_redraw_any": 940,
+ "redraw_by_master": {
+  "w100": 461,
+  "w700": 411,
+  "o20": 382,
+  "o48": 69,
+  "g200": 213,
+  "gm50": 20
+ },
+ "tier_share": {
+  "w100": {
+   "auto": 0.507,
+   "resize": 0.111,
+   "anchor": 0.32,
+   "width": 0.028,
+   "redraw": 0.035
+  },
+  "w700": {
+   "auto": 0.524,
+   "resize": 0.133,
+   "anchor": 0.226,
+   "width": 0.087,
+   "redraw": 0.03
+  },
+  "o20": {
+   "auto": 0.567,
+   "resize": 0.157,
+   "anchor": 0.227,
+   "width": 0.02,
+   "redraw": 0.029
+  },
+  "o48": {
+   "auto": 0.772,
+   "resize": 0.038,
+   "anchor": 0.164,
+   "width": 0.019,
+   "redraw": 0.007
+  },
+  "g200": {
+   "auto": 0.592,
+   "resize": 0.164,
+   "anchor": 0.197,
+   "width": 0.03,
+   "redraw": 0.017
+  },
+  "gm50": {
+   "auto": 0.743,
+   "resize": 0.132,
+   "anchor": 0.116,
+   "width": 0.007,
+   "redraw": 0.002
+  }
+ },
+ "after_anchor_resize": 1056
+}

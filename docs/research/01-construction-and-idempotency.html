@@ -1,0 +1,249 @@
+<title>Variance Research</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column, with a live type-specimen bench at the top and proof tables inline. */
+:root {
+  --paper: #f5f6f8; --surface: #ffffff; --ink: #14181f; --muted: #5b6472; --rule: #d9dde4;
+  --accent: #2f5bd3; --accent-soft: #e6ecfb; --good: #1f7a4a; --warn: #a15c00; --bad: #b3261e;
+  --display: "Instrument Sans", "IBM Plex Sans", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0f1217; --surface: #161a21; --ink: #e8ebf0; --muted: #9aa3b2; --rule: #2a303a;
+  --accent: #8aa8ff; --accent-soft: #1d2640; --good: #5fc48d; --warn: #e3a64a; --bad: #ff8a80; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0f1217; --surface: #161a21; --ink: #e8ebf0; --muted: #9aa3b2; --rule: #2a303a;
+  --accent: #8aa8ff; --accent-soft: #1d2640; --good: #5fc48d; --warn: #e3a64a; --bad: #ff8a80; color-scheme: dark }
+@font-face { font-family: "Proto Symbols"; src: url(data:font/ttf;base64,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) format("truetype"); }
+body { background: var(--paper); color: var(--ink); font: 16px/1.6 var(--body); }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 40px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.2; }
+h1 { font-size: 2.2rem; margin: 0 0 8px; letter-spacing: -0.01em; }
+h2 { font-size: 1.45rem; margin: 48px 0 12px; padding-top: 24px; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.1rem; margin: 28px 0 8px; }
+p, li { max-width: 65ch; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.lede { font-size: 1.15rem; color: var(--ink); }
+.meta { color: var(--muted); font-size: 14px; }
+code, .mono { font-family: var(--mono); font-size: 0.9em; }
+a { color: var(--accent); }
+.answer { background: var(--accent-soft); border-radius: 10px; padding: 16px 20px; margin: 24px 0; }
+.answer p { margin: 6px 0; }
+/* Specimen bench */
+.bench { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 20px; margin: 28px 0; }
+.bench-top { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; }
+.glyphs { display: flex; gap: 12px; align-items: center; font-family: "Proto Symbols"; color: var(--ink); line-height: 1; }
+.glyphs span { font-size: 120px; display: block; }
+.glyphs .sm { font-size: 24px; }
+.sliders { flex: 1 1 260px; min-width: 0; display: grid; gap: 10px; }
+.sliders label { display: grid; grid-template-columns: 52px 1fr 48px; gap: 10px; align-items: center; font: 500 13px var(--mono); }
+.sliders output { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=range]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bench-note { font-size: 13px; color: var(--muted); margin: 14px 0 0; }
+.fvs { font: 12px var(--mono); color: var(--muted); word-break: break-all; }
+/* Proof grid */
+.grid-wrap { overflow-x: auto; margin: 16px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+td.num { font-variant-numeric: tabular-nums; font-family: var(--mono); white-space: nowrap; }
+.proof td { text-align: center; }
+.proof .g { font-family: "Proto Symbols"; font-size: 44px; line-height: 1; display: inline-block; }
+.proof td:first-child { text-align: left; font: 500 13px var(--mono); vertical-align: middle; }
+.pill { display: inline-block; font: 600 11px/1 var(--mono); padding: 4px 7px; border-radius: 999px; letter-spacing: 0.04em; border: 1px solid currentColor; }
+.pill.good { color: var(--good); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); }
+ol.rules { padding-left: 1.3em; } ol.rules li { margin: 6px 0; }
+.pipeline { display: grid; gap: 8px; margin: 16px 0; padding: 0; list-style: none; counter-reset: s; }
+.pipeline li { counter-increment: s; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px 10px 48px; position: relative; max-width: none; }
+.pipeline li::before { content: counter(s); position: absolute; left: 14px; top: 10px; font: 600 13px var(--mono); color: var(--accent); }
+.pipeline b { font-family: var(--display); }
+.callout { border-left: 3px solid var(--warn); padding: 4px 0 4px 14px; margin: 16px 0; }
+footer { margin-top: 56px; font-size: 13px; color: var(--muted); }
+@media (max-width: 480px) { h1 { font-size: 1.8rem; } .glyphs span { font-size: 88px; } }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Variance · research 01 · 26 Nov 2026</div>
+  <h1>Building icons that can vary</h1>
+  <p class="lede">How to construct icons so one source can become a variable font with Material Symbols' four axes, and how to make every weight and size correction come out the same every time you run it.</p>
+  <p class="meta">Repo: <a href="https://github.com/snds/variance">snds/variance</a>. Everything below the bench was measured with a small working prototype in that repo, unless it says otherwise.</p>
+
+  <div class="answer">
+    <p><b>The short answer.</b> Draw the skeleton, not the outline.</p>
+    <p>Each icon should be stored as centre-lines plus a few rules (stroke alignment, caps, joins, which parts knock out). Every master is then generated from that one source by a fixed recipe.</p>
+    <p>Done that way, masters match point-for-point by construction, and rebuilding gives a byte-identical font. Exporting outlined art from Figma or Illustrator cannot promise either.</p>
+  </div>
+
+  <div class="bench" aria-label="Live prototype font">
+    <div class="bench-top">
+      <div class="glyphs" id="glyphs" aria-hidden="true"><span>&#xE000;</span><span>&#xE001;</span><span class="sm">&#xE000;</span></div>
+      <div class="sliders">
+        <label for="FILL">FILL <input id="FILL" type="range" min="0" max="1" step="0.01" value="0"><output id="FILL-o">0</output></label>
+        <label for="wght">wght <input id="wght" type="range" min="100" max="700" step="1" value="400"><output id="wght-o">400</output></label>
+        <label for="GRAD">GRAD <input id="GRAD" type="range" min="-50" max="200" step="1" value="0"><output id="GRAD-o">0</output></label>
+        <label for="opsz">opsz <input id="opsz" type="range" min="20" max="48" step="1" value="24"><output id="opsz-o">24</output></label>
+      </div>
+    </div>
+    <p class="bench-note">This is the real prototype font (2,092 bytes, two icons), embedded in the page. Move the sliders to see the corrections described below. Try FILL at 0.5 and wght at 700 together to see the two open problems.</p>
+    <p class="fvs" id="fvs"></p>
+  </div>
+
+  <h2>What we're matching</h2>
+  <p>Google's own guide gives the axes and their jobs. It does not publish how the font was built, how many masters it has, or which axis corners are drawn by hand.</p>
+  <div class="grid-wrap"><table>
+    <thead><tr><th>Axis</th><th>Range</th><th>Default</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">FILL</td><td class="num">0 – 1</td><td class="num">0</td><td>Outline to solid. Meant for state changes, such as a selected tab.</td></tr>
+      <tr><td class="mono">wght</td><td class="num">100 – 700</td><td class="num">400</td><td>Stroke weight. The guide notes it can also change the overall size a little.</td></tr>
+      <tr><td class="mono">GRAD</td><td class="num">−50 – 200</td><td class="num">0</td><td>Finer thickness control with almost no size change. Use about −25 for light icons on dark backgrounds, or to match a text face's grade.</td></tr>
+      <tr><td class="mono">opsz</td><td class="num">20 – 48</td><td class="num">24</td><td>Optical size. Stroke thickness shifts with rendered size so the icon looks the same at 20 px and 48 px.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="meta">Source: <a href="https://developers.google.com/fonts/docs/material_symbols">Material Symbols guide</a>. Some third-party pages list GRAD as −25 to 200; Google's guide says −50.</p>
+
+  <h2>The five things every master must share</h2>
+  <p>A variable font stores one shape and a set of moves for each point. That only works if each master has the same points in the same order. If any of these differ, the shape twists or explodes between masters.</p>
+  <ol class="rules">
+    <li><b>Same number of contours</b>, in the same order.</li>
+    <li><b>Same number of points</b> in each contour.</li>
+    <li><b>Same point types</b>: a corner stays a corner, a curve handle stays a handle.</li>
+    <li><b>Same start point</b> on each contour.</li>
+    <li><b>Same direction</b> on each contour: clockwise stays clockwise.</li>
+  </ol>
+  <p>One more rule follows from these. <b>Never delete points to change a shape; collapse them.</b> When FILL goes to 1, the hole in a ring doesn't disappear. Its four points shrink onto the centre.</p>
+
+  <h2>Why exported outlines break</h2>
+  <p>The usual route is "Outline stroke" in Figma or Illustrator at each weight. Those tools use a general stroker. It adds or drops points depending on the stroke width, because that is the right call for a single drawing.</p>
+  <p>The prototype measured this with Skia's stroker, the same engine family behind Chrome and many design tools:</p>
+  <div class="grid-wrap"><table>
+    <thead><tr><th>Shape</th><th>0.67 px stroke</th><th>2 px</th><th>3 px</th><th>Points a font needs</th></tr></thead>
+    <tbody>
+      <tr><td>Check mark (round join)</td><td class="num">12</td><td class="num">14</td><td class="num">14</td><td class="num">same in all</td></tr>
+      <tr><td>Ring</td><td class="num">52</td><td class="num">52</td><td class="num">52</td><td class="num">16</td></tr>
+    </tbody>
+  </table></div>
+  <p>The check mark loses two points at the thin weight, so the masters can't interpolate. The ring matches, but carries more than three times the points it needs, and nothing guarantees those points line up across weights. Either way, someone has to repair it by hand, per icon, per master. That is the step this project should remove.</p>
+
+  <h2>The construction method</h2>
+  <h3>Store skeletons and rules</h3>
+  <p>An icon source is a set of parts. Each part is one of three kinds:</p>
+  <div class="grid-wrap"><table>
+    <thead><tr><th>Part</th><th>Drawn as</th><th>Stroke rule</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><b>Closed stroke</b></td><td>Closed centre-line path</td><td>Grows inward. Butt caps don't apply.</td><td>The silhouette stays put as weight changes, so icons keep their footprint on the grid.</td></tr>
+      <tr><td><b>Open stroke</b></td><td>Open centre-line path</td><td>Centred. Butt caps, round joins.</td><td>A round join is one curve at every width, so the point count never changes. Miter joins jump between shapes at sharp angles.</td></tr>
+      <tr><td><b>Solid</b></td><td>Filled shape</td><td>Offset by a fraction of the stroke change.</td><td>Dots and small solid marks still need to gain weight with the rest.</td></tr>
+    </tbody>
+  </table></div>
+  <p>In Figma or Illustrator this is just an un-outlined stroked drawing, exported as SVG with strokes intact. Designers keep working the way they already do. The pipeline reads the stroke paths as skeletons and never asks for outlined art.</p>
+
+  <h3>Mark knockouts by direction</h3>
+  <p>A filled check circle shows the check as a hole in a solid disc. An outlined one shows the check as ink inside an empty ring. These look like opposite constructions, but one rule covers both.</p>
+  <p>Fonts use the nonzero fill rule. If the check is wound the opposite way to the outer ring, it reads as ink inside the empty counter at FILL 0, and as a hole in the solid disc at FILL 1. No point is added, removed or reversed. The source only needs to tag the part as a knockout.</p>
+
+  <h3>Make every correction a recipe</h3>
+  <p>Each axis is a small, fixed table or formula that turns the source into a master. The prototype uses these. The numbers are placeholder choices, not Material's values, which are not published.</p>
+  <div class="grid-wrap"><table>
+    <thead><tr><th>Correction</th><th>Recipe in the prototype</th></tr></thead>
+    <tbody>
+      <tr><td><b>Weight</b></td><td>Stroke width from a table: 100 → 0.67 px, 400 → 2 px, 700 → 3.33 px, straight lines between.</td></tr>
+      <tr><td><b>Optical size</b></td><td>Multiplies the stroke: ×1.10 at 20, ×1.00 at 24, ×0.85 at 48. Small icons get relatively heavier strokes so they survive the pixel grid.</td></tr>
+      <tr><td><b>Grade</b></td><td>Adds to the stroke: −0.2 px at −50, +0.67 px at 200. The silhouette doesn't move.</td></tr>
+      <tr><td><b>Fill</b></td><td>Ring counters collapse to their centre. Knockouts are handled by direction.</td></tr>
+      <tr><td><b>Clearance</b></td><td>As a ring thickens inward, inner details scale about their own centre to keep the same share of free space they have at 400. Capped between 0.5× and 1.1×.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Making it idempotent</h2>
+  <p>Idempotent means re-running the pipeline on the same source always gives the same result, and running a cleanup step twice changes nothing the second time. Four habits get you there.</p>
+  <ol class="rules">
+    <li><b>Always start from the source.</b> Every master is computed from the skeleton. A correction is never applied on top of an earlier output, so errors can't pile up.</li>
+    <li><b>Topology comes from the source, not the geometry.</b> Start points, direction and contour order are set by the part list. If the pipeline picked "the top-left point" in each master instead, a tie could pick different points at different weights.</li>
+    <li><b>Round once, at the end.</b> Coordinates stay exact until the last step, then snap to whole font units. Curves are converted to the font's quadratic format jointly across all masters (fontTools <span class="mono">cu2qu</span>), so each master gets the same number of curve pieces.</li>
+    <li><b>Pin everything that isn't design.</b> Font files carry created and modified dates. Unless they are fixed, every build differs even when nothing changed.</li>
+  </ol>
+
+  <h2>What the prototype proved</h2>
+  <div class="grid-wrap"><table>
+    <thead><tr><th>Test</th><th>Result</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>Build twice, compare files</td><td>Byte-identical. SHA-256 starts <span class="mono">be595f4d3c3b</span>.</td><td><span class="pill good">PASS</span></td></tr>
+      <tr><td>Points, point types, start points and direction across 8 masters</td><td>All match, checked with fontTools <span class="mono">varLib.interpolatable</span>.</td><td><span class="pill good">PASS</span></td></tr>
+      <tr><td>Negative control: start point moved on one master</td><td>Caught, but named as an "underweight" contour, not a start-point error. The checker's start-point test is a best guess. Since we set start points from the source, our own exact check against the source should own this.</td><td><span class="pill warn">PASS*</span></td></tr>
+      <tr><td>Contour order check at FILL 1</td><td>Flagged. The collapsed counter has zero area, which confuses the checker's matching guess. Order is fixed by construction, so this is a false alarm.</td><td><span class="pill warn">REVIEW</span></td></tr>
+      <tr><td>Heavy weight crowding</td><td>Fixed by the clearance correction. Compare wght 700 in the proof below.</td><td><span class="pill good">PASS</span></td></tr>
+      <tr><td>FILL at 0.5</td><td>Looks broken: the shrinking hole cuts across the check.</td><td><span class="pill bad">OPEN</span></td></tr>
+      <tr><td>Axis corners</td><td>Up to 1.32 px off at 24 px (wght 700 + FILL 1). See below.</td><td><span class="pill bad">OPEN</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Proof sheet</h3>
+  <p>Each row moves one axis from the default. Rendered live from the embedded font.</p>
+  <div class="grid-wrap"><table class="proof" id="proof"></table></div>
+
+  <h3>Corners need their own masters</h3>
+  <p>The font only stores one move per axis, then adds them together. That's exact when corrections are straight lines. Clearance and fill aren't, so the corners drift from what the recipe would draw.</p>
+  <div class="grid-wrap"><table>
+    <thead><tr><th>Corner</th><th>Drift at 24 px</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">wght 700 · opsz 20</td><td class="num">0.23 px</td></tr>
+      <tr><td class="mono">wght 100 · opsz 48 · GRAD −50</td><td class="num">0.80 px</td></tr>
+      <tr><td class="mono">wght 700 · opsz 20 · GRAD 200</td><td class="num">0.82 px</td></tr>
+      <tr><td class="mono">wght 700 · FILL 1</td><td class="num">1.32 px</td></tr>
+    </tbody>
+  </table></div>
+  <p>The fix stays automatic. The pipeline measures drift at every corner, and adds a corner master only where drift passes a budget, such as a quarter pixel. Because the recipe is fixed, the same corners get added every time.</p>
+
+  <h2>Proposed pipeline</h2>
+  <ol class="pipeline">
+    <li><b>Ingest.</b> Accept SVG from Figma, Illustrator or anywhere. Turn shapes into paths and apply transforms, the way Google's picosvg cleans SVGs for color fonts.</li>
+    <li><b>Classify.</b> Sort each path into closed stroke, open stroke, solid or knockout. Read tags from layer names, with sensible guesses when they're missing.</li>
+    <li><b>Lint the construction.</b> Flag what the recipes can't handle, such as outlined strokes, miter joins, or a detail too close to a ring. Explain the fix in design terms.</li>
+    <li><b>Generate masters.</b> Run the recipes for every master location.</li>
+    <li><b>Compatibility gate.</b> Exact checks must pass. Heuristic checks are listed for review, not treated as failures.</li>
+    <li><b>Corner pass.</b> Measure drift and add corner masters over budget.</li>
+    <li><b>Compile.</b> Build the variable font with fontTools, with private-use code points and name ligatures.</li>
+    <li><b>Proof.</b> Produce a proof sheet like the one above, plus a file hash to show nothing changed when nothing should have.</li>
+  </ol>
+
+  <h2>Decisions</h2>
+  <ol class="rules">
+    <li><span class="pill good">DECIDED</span> <b>Source format.</b> Stroked skeleton SVGs are the only input for v1. Boolean construction is covered in <a href="https://claude.ai/artifact/Axin6TN2CGjek4xqPqAMvc">research 02</a>.</li>
+    <li><span class="pill warn">DESIGN FOR</span> <b>Hand-drawn overrides.</b> Nice-to-have, but the architecture should allow it. That means a glyph editor, like Glyphs, where a designer adjusts each generated master's points. To keep builds repeatable, store each override as point moves on top of the generated master, not as a replacement drawing. If the source's structure changes, the override is flagged as stale instead of silently applied.</li>
+    <li><span class="pill good">DECIDED</span> <b>First axes.</b> wght and FILL first, then opsz and GRAD.</li>
+    <li><span class="pill good">DECIDED</span> <b>FILL midpoints.</b> Test all three options on ten real icons before choosing: an extra master at 0.5, a remapped FILL curve, or counters that shrink around details.</li>
+  </ol>
+
+  <footer>
+    Sources: <a href="https://developers.google.com/fonts/docs/material_symbols">Material Symbols guide</a> ·
+    <a href="https://fonttools.readthedocs.io/en/latest/_modules/fontTools/varLib/interpolatable.html">fontTools varLib.interpolatable</a> ·
+    <a href="https://github.com/googlefonts/nanoemoji">nanoemoji and picosvg</a> ·
+    <a href="https://github.com/fonttools/fonttools/discussions/3090">fontTools: importing SVG outlines</a>.
+    Prototype: fontTools 4.69.1, skia-pathops 0.9.2.
+  </footer>
+</div>
+
+<script>
+const axes = ["FILL", "wght", "GRAD", "opsz"];
+const glyphs = document.getElementById("glyphs"), fvsOut = document.getElementById("fvs");
+function fvs(s) { return axes.map(a => `'${a}' ${s[a]}`).join(", "); }
+function update() {
+  const s = {}; axes.forEach(a => { s[a] = document.getElementById(a).value; document.getElementById(a + "-o").textContent = s[a]; });
+  glyphs.style.fontVariationSettings = fvs(s); fvsOut.textContent = "font-variation-settings: " + fvs(s) + ";";
+}
+axes.forEach(a => document.getElementById(a).addEventListener("input", update)); update();
+const rows = [["FILL", [0, 0.5, 1]], ["wght", [100, 400, 700]], ["GRAD", [-50, 0, 200]], ["opsz", [20, 24, 48]]];
+const d = { FILL: 0, wght: 400, GRAD: 0, opsz: 24 };
+let h = "";
+for (const [ax, vals] of rows) {
+  h += `<tr><td>${ax}</td>`;
+  for (const v of vals) { const st = fvs(Object.assign({}, d, { [ax]: v }));
+    h += `<td><span class="g" style="font-variation-settings:${st}">&#xE000;</span> <span class="g" style="font-variation-settings:${st}">&#xE001;</span><div class="mono" style="font-size:12px">${v}</div></td>`; }
+  h += "</tr>";
+}
+document.getElementById("proof").innerHTML = h;
+</script>
