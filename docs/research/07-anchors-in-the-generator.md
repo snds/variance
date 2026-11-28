@@ -73,6 +73,9 @@ Median area that differs from Google, px² at 24 px:
 
 ## Caveats
 
+- Research 08 found two measuring bugs behind these numbers (the edge search
+  and flipped edge normals). Corrected and finer results are in
+  [research 08](08-toward-100.md).
 - The learned rule was trained on all Material icons except these 20.
 - The score covers edges only (within 0.25 px). It doesn't check that the
   masters stay point-compatible; that is a separate step.

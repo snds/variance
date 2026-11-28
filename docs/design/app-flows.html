@@ -1,0 +1,561 @@
+<title>Variance App Flows</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (760px) with wireframe figures breaking out to 1040px. Same tokens as the research series. */
+:root {
+  --paper: #f5f6f8; --surface: #ffffff; --ink: #14181f; --muted: #5b6472; --rule: #d9dde4;
+  --accent: #2f5bd3; --accent-soft: #e6ecfb; --good: #1f7a4a; --warn: #a15c00; --bad: #b3261e;
+  --wf-fill: #eef0f4; --wf-line: #b9c0cc; --ref: #2f7fd3; --ours: #d3452f;
+  --display: "Instrument Sans", "IBM Plex Sans", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0f1217; --surface: #161a21; --ink: #e8ebf0; --muted: #9aa3b2; --rule: #2a303a;
+  --accent: #8aa8ff; --accent-soft: #1d2640; --good: #5fc48d; --warn: #e3a64a; --bad: #ff8a80;
+  --wf-fill: #1d222b; --wf-line: #3a4250; --ref: #6fb0ff; --ours: #ff8a73; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0f1217; --surface: #161a21; --ink: #e8ebf0; --muted: #9aa3b2; --rule: #2a303a;
+  --accent: #8aa8ff; --accent-soft: #1d2640; --good: #5fc48d; --warn: #e3a64a; --bad: #ff8a80;
+  --wf-fill: #1d222b; --wf-line: #3a4250; --ref: #6fb0ff; --ours: #ff8a73; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font: 16px/1.6 var(--body); }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 40px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.2; }
+h1 { font-size: 2.2rem; margin: 0 0 8px; letter-spacing: -0.01em; }
+h2 { font-size: 1.45rem; margin: 48px 0 12px; padding-top: 24px; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.1rem; margin: 28px 0 8px; }
+p, li { max-width: 65ch; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.lede { font-size: 1.15rem; }
+.meta { color: var(--muted); font-size: 14px; }
+code, .mono { font-family: var(--mono); font-size: 0.9em; }
+a { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.answer { background: var(--accent-soft); border-radius: 10px; padding: 16px 20px; margin: 24px 0; }
+.answer ul { margin: 0; padding-left: 1.2em; }
+.answer li { margin: 6px 0; }
+.tbl { overflow-x: auto; margin: 16px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+td:first-child { font-weight: 600; }
+.pill { display: inline-block; font: 600 11px/1 var(--mono); padding: 4px 7px; border-radius: 999px; letter-spacing: 0.04em; border: 1px solid currentColor; white-space: nowrap; }
+.pill.good { color: var(--good); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); } .pill.acc { color: var(--accent); } .pill.mut { color: var(--muted); }
+/* Flow strip: a real sequence, so it is numbered. */
+.flow { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 20px 0; counter-reset: s; }
+.flow li { counter-increment: s; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 12px; font-size: 14px; font-weight: 500; }
+.flow li::before { content: counter(s); font: 500 11px var(--mono); color: var(--muted); margin-right: 8px; }
+.flow li.loop { border-color: var(--accent); color: var(--accent); }
+.tiers { display: grid; gap: 8px; margin: 20px 0; }
+.tier { display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: baseline; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; }
+.tier b { font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.tier span { min-width: 0; }
+.tier:nth-child(2) { margin-left: 24px; } .tier:nth-child(3) { margin-left: 48px; border-color: var(--accent); }
+@media (max-width: 520px) { .tier { grid-template-columns: 1fr; gap: 2px; } .tier:nth-child(2) { margin-left: 10px; } .tier:nth-child(3) { margin-left: 20px; } }
+/* Wireframe figures */
+figure.wf { margin: 32px calc(50% - min(520px, 50vw - 16px)); }
+.wf-scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; }
+.wf-scroll svg { display: block; min-width: 760px; width: 100%; height: auto; }
+figcaption { font-size: 14px; color: var(--muted); margin: 10px auto 0; max-width: 760px; }
+figcaption b { color: var(--ink); }
+svg text { font-family: var(--body); fill: var(--ink); }
+svg .m { font-family: var(--mono); fill: var(--muted); font-size: 11px; }
+svg .h { font-family: var(--display); font-weight: 600; font-size: 14px; }
+svg .s { font-size: 12px; }
+svg .box { fill: var(--wf-fill); stroke: var(--wf-line); }
+svg .card { fill: var(--surface); stroke: var(--wf-line); }
+svg .ln { stroke: var(--wf-line); fill: none; }
+svg .ink { fill: none; stroke: var(--ink); stroke-linecap: round; stroke-linejoin: round; }
+svg .inkf { fill: var(--ink); }
+svg .acc { stroke: var(--accent); fill: none; }
+svg .accf { fill: var(--accent); }
+svg .accsoft { fill: var(--accent-soft); stroke: var(--accent); }
+svg .good { fill: var(--good); } svg .warn { fill: var(--warn); } svg .bad { fill: var(--bad); }
+svg .goodl { stroke: var(--good); fill: none; } svg .warnl { stroke: var(--warn); fill: none; } svg .badl { stroke: var(--bad); fill: none; }
+svg .ref { stroke: var(--ref); fill: none; } svg .ours { stroke: var(--ours); fill: none; }
+svg .reff { fill: var(--ref); } svg .oursf { fill: var(--ours); }
+svg .ghost { stroke: var(--muted); fill: none; stroke-dasharray: 3 3; }
+svg .chiptx { font: 600 10px var(--mono); }
+svg use { color: var(--ink); }
+ol.dec { padding-left: 1.4em; } ol.dec li { margin: 12px 0; }
+.rec { display: block; margin-top: 4px; color: var(--muted); font-size: 15px; }
+.rec b { color: var(--good); }
+</style>
+
+<!-- Shared glyph stand-ins for the wireframes. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="g-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></symbol>
+    <symbol id="g-ring" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></symbol>
+    <symbol id="g-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></symbol>
+    <symbol id="g-off" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M5 5l14 14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></symbol>
+    <symbol id="g-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6h-6v6H4z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></symbol>
+    <symbol id="g-bell" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M10 21h4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></symbol>
+    <symbol id="g-kbd" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M7 10h1M11 10h1M15 10h1M8 14h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></symbol>
+    <symbol id="g-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <div class="eyebrow">Design doc · 2026-11-28 · Draft for review</div>
+  <h1>Variance app flows</h1>
+  <p class="lede">How a designer takes a folder of SVG icons to a shipped variable font: the flows, the objects, the screens, and the tools for the part no rule can do.</p>
+  <p class="meta">Builds on the research thread's manual-fix brief and research 01–08. Markdown source: <code>docs/design/app-flows.md</code>.</p>
+
+  <div class="answer">
+    <ul>
+      <li><b>Variance is a token system for icon geometry.</b> The set's style rule is the global tier, edge contexts are the semantic tier, and per-part settings are the component tier. A manual fix is a component override the rule never overwrites.</li>
+      <li><b>One loop, six stages:</b> import, choose a style, generate, triage, fix, export. A seventh, teach the rule, feeds fixes back so later icons need fewer.</li>
+      <li><b>The review queue is the home screen.</b> The rule alone reaches 76% / 64% of Google's edges; fitted settings reach 94% / 89%. The queue ranks icons by risk and says why, so designers look at the worst 10–20%.</li>
+      <li><b>Fit to a drawing is the headline tool.</b> Draw one master by hand once; Variance turns it into settings on the source.</li>
+      <li><b>Decided 2026-11-28:</b> a local web app over the Python core; Variance owns the source, saved locally as plain SVG and JSON; collapse-only for small sizes in v1; outline import in v1.</li>
+    </ul>
+  </div>
+
+  <h2>Token tiers for geometry</h2>
+  <p>The research already has three layers of settings. Naming them as tiers gives designers a model they know from colour and spacing tokens. A lower tier wins; the inspector shows each value's resolved source, the way Figma shows a variable's alias chain.</p>
+  <div class="tiers">
+    <div class="tier"><b>Global</b><span><strong>Style rule.</strong> "Pen" or the learned anchored rule. Chosen once per set; retrained from fixes.</span></div>
+    <div class="tier"><b>Semantic</b><span><strong>Context.</strong> "Counter edge at wght 700 moves +0.30 px." Rarely edited; lives in the Style screen.</span></div>
+    <div class="tier"><b>Component</b><span><strong>Part setting.</strong> "<code>lock-badge</code> top side holds still at wght 700." Set by the fix tools and marked <span class="pill acc">MANUAL</span>.</span></div>
+  </div>
+  <p>Retraining changes only the global and semantic tiers, so a designer's fixes survive every retrain and every style change.</p>
+
+  <h2>The flow</h2>
+  <ol class="flow">
+    <li>Set up</li><li>Import</li><li>Choose style</li><li>Generate + gate</li><li>Triage</li><li>Fix</li><li class="loop">Teach the rule</li><li>Proof</li><li>Export</li><li class="loop">Maintain</li>
+  </ol>
+  <p>Fix loops back to generate on every edit. Teach the rule loops back to generate for the icons nobody fixed. Maintain loops back to import, and after the first release it's where most time goes.</p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>Stage</th><th>What the designer does</th><th>What Variance does</th></tr></thead>
+    <tbody>
+      <tr><td>Set up</td><td>Names the set, turns on axes (v1: wght and FILL), picks master locations</td><td>Defaults to Material's public ranges, the 960-unit grid, PUA code points frozen on first export</td></tr>
+      <tr><td>Import</td><td>Drops a folder of SVGs</td><td>Reads layer names as roles (<code>slash cut gap=1</code>), fits skeletons, lints, and writes an import report with one-click renames for its guesses</td></tr>
+      <tr><td>Choose style</td><td>Picks Pen, Anchored, or Learn from my set</td><td>Fills every setting from that rule</td></tr>
+      <tr><td>Generate + gate</td><td>Nothing</td><td>Builds each master; runs blocking gates and warnings</td></tr>
+      <tr><td>Triage</td><td>Works the queue: accept, fix, defer</td><td>Ranks by risk; gives each row a reason</td></tr>
+      <tr><td>Fix</td><td>Pins sides, drags ends, fits to a drawing</td><td>Regenerates live; updates the score</td></tr>
+      <tr><td>Teach the rule</td><td>Presses Retrain after reviewing the impact preview</td><td>Learns from fixes; regenerates unfixed icons only</td></tr>
+      <tr><td>Proof</td><td>Signs off at real sizes, on light and dark, next to text</td><td>Renders specimens; compares builds</td></tr>
+      <tr><td>Export</td><td>Picks outputs</td><td>Builds the font, its SHA-256 and a changelog; refuses while anything is Blocked</td></tr>
+      <tr><td>Maintain</td><td>Adds or re-imports icons</td><td>Keeps settings on parts that still exist; marks the rest Stale</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Icon status</h3>
+  <p>One chip per icon, always traceable to its findings.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Status</th><th>Meaning</th><th>Next step</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill bad">REBUILD FAILED</span></td><td>The source didn't rebuild exactly from the SVG</td><td>Fix the file or layer names; re-import</td></tr>
+      <tr><td><span class="pill bad">BLOCKED</span></td><td>A blocking gate failed</td><td>Must fix before export</td></tr>
+      <tr><td><span class="pill warn">NEEDS REVIEW</span></td><td>Rule unsure, a warning fired, or a low reference score</td><td>Review in the queue</td></tr>
+      <tr><td><span class="pill good">LOOKS GOOD</span></td><td>Gates pass, rule confident</td><td>Optional spot-check</td></tr>
+      <tr><td><span class="pill acc">REVIEWED</span></td><td>A designer accepted it</td><td>Nothing until the source changes</td></tr>
+      <tr><td><span class="pill mut">STALE</span></td><td>The source changed under a manual fix</td><td>Re-attach or drop the fix</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Key screens</h2>
+
+  <!-- LIBRARY -->
+  <figure class="wf">
+    <div class="wf-scroll">
+    <svg viewBox="0 0 1040 470" role="img" aria-label="Library wireframe: a grid of icons with status chips and a location bar that renders all icons at wght 700">
+      <rect x="0" y="0" width="1040" height="52" class="box"/>
+      <text x="20" y="31" class="h">Outline 24 · Library</text>
+      <text x="230" y="31" class="m">412 icons</text>
+      <g transform="translate(330 18)">
+        <rect width="112" height="18" rx="9" class="card"/><text x="10" y="13" class="chiptx" style="fill:var(--good)">LOOKS GOOD 301</text>
+        <rect x="120" width="118" height="18" rx="9" class="card"/><text x="130" y="13" class="chiptx" style="fill:var(--warn)">NEEDS REVIEW 84</text>
+        <rect x="246" width="94" height="18" rx="9" class="card"/><text x="256" y="13" class="chiptx" style="fill:var(--accent)">REVIEWED 21</text>
+        <rect x="348" width="78" height="18" rx="9" class="card"/><text x="358" y="13" class="chiptx" style="fill:var(--bad)">BLOCKED 6</text>
+      </g>
+      <rect x="880" y="12" width="140" height="28" rx="6" class="accsoft"/><text x="905" y="31" class="s" style="fill:var(--accent);font-weight:600">Open queue (90)</text>
+      <!-- location bar -->
+      <rect x="20" y="68" width="1000" height="48" rx="8" class="card"/>
+      <text x="36" y="97" class="m">SHOW ALL AT</text>
+      <text x="130" y="97" class="s" style="font-weight:600">wght</text>
+      <line x1="170" y1="92" x2="420" y2="92" class="ln" stroke-width="3"/>
+      <line x1="170" y1="92" x2="378" y2="92" class="acc" stroke-width="3"/>
+      <circle cx="378" cy="92" r="7" class="accf"/>
+      <text x="432" y="97" class="m">700</text>
+      <text x="490" y="97" class="s" style="font-weight:600">FILL</text>
+      <rect x="526" y="83" width="34" height="18" rx="9" class="box"/><circle cx="535" cy="92" r="6" class="card"/>
+      <text x="570" y="97" class="m">0</text>
+      <text x="620" y="97" class="s" style="fill:var(--muted)">opsz · GRAD next</text>
+      <text x="800" y="97" class="m">Filter: reason · part · status</text>
+      <!-- grid -->
+      <g id="lib-grid">
+        <g transform="translate(20 134)">
+          <rect width="112" height="96" rx="8" class="card"/><use href="#g-lock" x="34" y="14" width="44" height="44" style="stroke-width:1.6"/><text x="10" y="78" class="m">lock</text><circle cx="98" cy="14" r="5" class="good"/>
+        </g>
+        <g transform="translate(144 134)">
+          <rect width="112" height="96" rx="8" class="card"/><use href="#g-off" x="34" y="14" width="44" height="44"/><text x="10" y="78" class="m">toggle_off</text><circle cx="98" cy="14" r="5" class="bad"/>
+        </g>
+        <g transform="translate(268 134)">
+          <rect width="112" height="96" rx="8" class="card"/><use href="#g-check" x="34" y="14" width="44" height="44"/><text x="10" y="78" class="m">check</text><circle cx="98" cy="14" r="5" class="good"/>
+        </g>
+        <g transform="translate(392 134)">
+          <rect width="112" height="96" rx="8" class="card"/><use href="#g-kbd" x="34" y="14" width="44" height="44"/><text x="10" y="78" class="m">keyboard_lock</text><circle cx="98" cy="14" r="5" class="warn"/>
+        </g>
+        <g transform="translate(516 134)">
+          <rect width="112" height="96" rx="8" class="card"/><use href="#g-home" x="34" y="14" width="44" height="44"/><text x="10" y="78" class="m">home</text><circle cx="98" cy="14" r="5" style="fill:var(--accent)"/>
+        </g>
+        <g transform="translate(640 134)">
+          <rect width="112" height="96" rx="8" class="card"/><use href="#g-bell" x="34" y="14" width="44" height="44"/><text x="10" y="78" class="m">notifications</text><circle cx="98" cy="14" r="5" class="warn"/>
+        </g>
+        <g transform="translate(764 134)">
+          <rect width="112" height="96" rx="8" class="card"/><use href="#g-ring" x="34" y="14" width="44" height="44"/><text x="10" y="78" class="m">circle</text><circle cx="98" cy="14" r="5" class="good"/>
+        </g>
+        <g transform="translate(888 134)">
+          <rect width="132" height="96" rx="8" class="card"/><use href="#g-plus" x="44" y="14" width="44" height="44"/><text x="10" y="78" class="m">add</text><circle cx="118" cy="14" r="5" class="good"/>
+        </g>
+      </g>
+      <g opacity="0.55">
+        <rect x="20" y="242" width="112" height="96" rx="8" class="card"/><rect x="144" y="242" width="112" height="96" rx="8" class="card"/><rect x="268" y="242" width="112" height="96" rx="8" class="card"/><rect x="392" y="242" width="112" height="96" rx="8" class="card"/><rect x="516" y="242" width="112" height="96" rx="8" class="card"/><rect x="640" y="242" width="112" height="96" rx="8" class="card"/><rect x="764" y="242" width="112" height="96" rx="8" class="card"/><rect x="888" y="242" width="132" height="96" rx="8" class="card"/>
+      </g>
+      <!-- callouts -->
+      <g>
+        <line x1="378" y1="116" x2="378" y2="128" class="acc"/>
+        <rect x="20" y="360" width="490" height="90" rx="8" class="accsoft"/>
+        <text x="36" y="384" class="s" style="font-weight:600">The location bar re-renders the whole grid</text>
+        <text x="36" y="404" class="s">Scrub wght to 700 and every icon draws at that weight. Problems</text>
+        <text x="36" y="422" class="s">that only show at one master become visible across the set at once.</text>
+        <rect x="530" y="360" width="490" height="90" rx="8" class="card"/>
+        <text x="546" y="384" class="s" style="font-weight:600">Status dot on every tile, counts in the header</text>
+        <text x="546" y="404" class="s">The header chips double as filters. "Open queue" counts Blocked</text>
+        <text x="546" y="422" class="s">plus Needs review, the only icons that need a person.</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption><b>Library.</b> The set's health at a glance, at any location. Opens from Set up and after every import.</figcaption>
+  </figure>
+
+  <!-- QUEUE -->
+  <figure class="wf">
+    <div class="wf-scroll">
+    <svg viewBox="0 0 1040 430" role="img" aria-label="Review queue wireframe: ranked rows with icon renders at the risky location, reason chips and keyboard actions">
+      <rect x="0" y="0" width="1040" height="52" class="box"/>
+      <text x="20" y="31" class="h">Review queue</text>
+      <text x="140" y="31" class="m">90 to review · worst first</text>
+      <text x="760" y="31" class="m">J/K move · A accept · F fix · D defer</text>
+      <!-- filter rail -->
+      <rect x="20" y="68" width="200" height="342" rx="8" class="card"/>
+      <text x="36" y="92" class="m">REASON</text>
+      <text x="36" y="116" class="s">Blocked gate · 6</text>
+      <text x="36" y="138" class="s">Rule unsure · 41</text>
+      <text x="36" y="160" class="s">Counter closes · 17</text>
+      <text x="36" y="182" class="s">Gap too tight · 12</text>
+      <text x="36" y="204" class="s">Low score · 14</text>
+      <text x="36" y="240" class="m">SHARED PART</text>
+      <text x="36" y="264" class="s">lock-badge · 23</text>
+      <text x="36" y="286" class="s">slash · 31</text>
+      <text x="36" y="322" class="m">LOCATION</text>
+      <text x="36" y="346" class="s">wght 100 · wght 700</text>
+      <!-- rows -->
+      <g transform="translate(236 68)">
+        <rect width="784" height="72" rx="8" class="card" style="stroke:var(--bad)"/>
+        <text x="16" y="28" class="s" style="font-weight:600">toggle_off</text><text x="16" y="48" class="m">#1</text>
+        <use href="#g-off" x="130" y="12" width="48" height="48"/><text x="186" y="62" class="m">w700</text>
+        <rect x="250" y="16" width="150" height="20" rx="10" class="card" style="stroke:var(--bad)"/><text x="260" y="30" class="chiptx" style="fill:var(--bad)">CUT OUT OF RANGE</text>
+        <text x="250" y="56" class="s" style="fill:var(--muted)">gap=1 + half stroke passes the ring at wght 640+</text>
+        <rect x="690" y="22" width="78" height="28" rx="6" class="accsoft"/><text x="714" y="41" class="s" style="fill:var(--accent);font-weight:600">Fix</text>
+      </g>
+      <g transform="translate(236 150)">
+        <rect width="784" height="72" rx="8" class="card" style="stroke:var(--accent);stroke-width:2"/>
+        <text x="16" y="28" class="s" style="font-weight:600">keyboard_lock</text><text x="16" y="48" class="m">#7</text>
+        <use href="#g-kbd" x="130" y="12" width="48" height="48"/><text x="186" y="62" class="m">w100</text>
+        <rect x="250" y="16" width="214" height="20" rx="10" class="card" style="stroke:var(--warn)"/><text x="260" y="30" class="chiptx" style="fill:var(--warn)">RULE UNSURE · KNOCKOUT IN SOLID</text>
+        <rect x="472" y="16" width="86" height="20" rx="10" class="card" style="stroke:var(--warn)"/><text x="482" y="30" class="chiptx" style="fill:var(--warn)">SCORE 71%</text>
+        <text x="250" y="56" class="s" style="fill:var(--muted)">Lock badge: which side holds is a guess</text>
+        <rect x="600" y="22" width="78" height="28" rx="6" class="card"/><text x="618" y="41" class="s">Accept</text>
+        <rect x="690" y="22" width="78" height="28" rx="6" class="accsoft"/><text x="714" y="41" class="s" style="fill:var(--accent);font-weight:600">Fix</text>
+      </g>
+      <g transform="translate(236 232)">
+        <rect width="784" height="72" rx="8" class="card"/>
+        <text x="16" y="28" class="s" style="font-weight:600">notifications</text><text x="16" y="48" class="m">#8</text>
+        <use href="#g-bell" x="130" y="12" width="48" height="48"/><text x="186" y="62" class="m">w700</text>
+        <rect x="250" y="16" width="130" height="20" rx="10" class="card" style="stroke:var(--warn)"/><text x="260" y="30" class="chiptx" style="fill:var(--warn)">COUNTER CLOSES</text>
+        <text x="250" y="56" class="s" style="fill:var(--muted)">Clapper counter under 1.5 px at wght 700</text>
+        <rect x="600" y="22" width="78" height="28" rx="6" class="card"/><text x="618" y="41" class="s">Accept</text>
+        <rect x="690" y="22" width="78" height="28" rx="6" class="accsoft"/><text x="714" y="41" class="s" style="fill:var(--accent);font-weight:600">Fix</text>
+      </g>
+      <g opacity="0.5" transform="translate(236 314)"><rect width="784" height="72" rx="8" class="card"/></g>
+      <g transform="translate(236 396)"><text x="0" y="10" class="s" style="fill:var(--muted)">Select rows with the same reason → "Apply one fix to 12 icons" (batch fix)</text></g>
+    </svg>
+    </div>
+    <figcaption><b>Review queue.</b> The designer's home once generation runs. Every row shows the icon only at the location that worries the queue, plus a plain-language reason.</figcaption>
+  </figure>
+
+  <!-- EDITOR -->
+  <figure class="wf">
+    <div class="wf-scroll">
+    <svg viewBox="0 0 1040 600" role="img" aria-label="Icon editor wireframe: parts list, canvas with skeleton, outline and diff overlay, location map, and inspector showing tiers">
+      <rect x="0" y="0" width="1040" height="52" class="box"/>
+      <text x="20" y="31" class="h">keyboard_lock</text>
+      <rect x="140" y="17" width="96" height="20" rx="10" class="card" style="stroke:var(--warn)"/><text x="150" y="31" class="chiptx" style="fill:var(--warn)">NEEDS REVIEW</text>
+      <text x="640" y="31" class="m">Layers: skeleton · outline · reference · diff · px grid</text>
+      <!-- parts -->
+      <rect x="20" y="68" width="190" height="400" rx="8" class="card"/>
+      <text x="36" y="92" class="m">PARTS</text>
+      <text x="36" y="118" class="s">▸ body  <tspan class="m">stroke · inside</tspan></text>
+      <text x="36" y="142" class="s">▸ keys  <tspan class="m">patch</tspan></text>
+      <rect x="28" y="152" width="174" height="26" rx="5" class="accsoft"/>
+      <text x="36" y="170" class="s" style="font-weight:600">▾ lock-badge  <tspan class="m">shared</tspan></text>
+      <text x="52" y="194" class="s">shackle  <tspan class="m">stroke</tspan></text>
+      <text x="52" y="216" class="s">case  <tspan class="m">solid</tspan></text>
+      <text x="52" y="238" class="s">gap  <tspan class="m">cut gap=1</tspan></text>
+      <!-- location map -->
+      <rect x="226" y="68" width="530" height="60" rx="8" class="card"/>
+      <text x="242" y="92" class="m">LOCATION</text>
+      <line x1="320" y1="98" x2="600" y2="98" class="ln" stroke-width="2"/>
+      <circle cx="320" cy="98" r="7" class="card" style="stroke:var(--ink)"/><text x="306" y="122" class="m">100</text>
+      <circle cx="460" cy="98" r="7" class="card" style="stroke:var(--ink)"/><text x="446" y="122" class="m">400</text>
+      <circle cx="600" cy="98" r="9" class="accf"/><text x="586" y="122" class="m">700</text>
+      <circle cx="610" cy="88" r="4" class="warn"/>
+      <text x="620" y="92" class="m">wght</text>
+      <text x="660" y="92" class="m">FILL 0</text>
+      <text x="660" y="112" class="m">opsz 24</text>
+      <!-- canvas -->
+      <rect x="226" y="140" width="530" height="328" rx="8" class="card"/>
+      <g stroke-width="0.5" class="ln" opacity="0.6">
+        <path d="M266 160V448M306 160V448M346 160V448M386 160V448M426 160V448M466 160V448M506 160V448M546 160V448M586 160V448M626 160V448M666 160V448M706 160V448"/>
+        <path d="M246 180H736M246 220H736M246 260H736M246 300H736M246 340H736M246 380H736M246 420H736"/>
+      </g>
+      <!-- keyboard body outline (ours) and reference -->
+      <rect x="286" y="250" width="300" height="170" rx="18" class="ink" stroke-width="2"/>
+      <rect x="306" y="270" width="260" height="130" rx="8" class="ink" stroke-width="2"/>
+      <rect x="296" y="260" width="280" height="150" rx="12" class="ghost" stroke-width="1.5"/>
+      <path d="M336 300h20M376 300h20M416 300h20M346 340h100" class="ink" stroke-width="8"/>
+      <!-- lock badge: diff shows our case too low -->
+      <rect x="566" y="250" width="120" height="96" rx="10" class="inkf" opacity="0.88"/>
+      <rect x="566" y="242" width="120" height="96" rx="10" class="ref" stroke-width="2"/>
+      <path d="M566 338h120" class="ours" stroke-width="4"/>
+      <path d="M566 242h120" class="ref" stroke-width="4"/>
+      <path d="M596 250v-26a30 30 0 0 1 60 0v26" class="ink" stroke-width="10"/>
+      <path d="M596 236v-12a30 30 0 0 1 60 0v12" class="ghost" stroke-width="1"/>
+      <!-- side pin -->
+      <circle cx="626" cy="342" r="9" class="card" style="stroke:var(--accent);stroke-width:2"/>
+      <path d="M626 336v12M620 342h12" class="acc" stroke-width="2"/>
+      <rect x="636" y="356" width="116" height="44" rx="6" class="accsoft"/>
+      <text x="650" y="374" class="chiptx" style="fill:var(--accent)">SIDE PIN · BOTTOM</text>
+      <text x="650" y="390" class="m" style="fill:var(--accent)">hold · drag to set</text>
+      <text x="246" y="456" class="m">Grey = both · </text><text x="340" y="456" class="m" style="fill:var(--ref)">blue = reference only</text><text x="470" y="456" class="m" style="fill:var(--ours)"> · red = ours only</text>
+      <text x="640" y="456" class="s" style="font-weight:600">Score 71% → 93%</text>
+      <!-- inspector -->
+      <rect x="772" y="68" width="248" height="400" rx="8" class="card"/>
+      <text x="788" y="92" class="m">INSPECTOR · case · wght 700</text>
+      <text x="788" y="118" class="m">SCOPE</text>
+      <rect x="788" y="126" width="80" height="22" rx="11" class="accsoft"/><text x="796" y="141" class="chiptx" style="fill:var(--accent)">THIS LOC</text>
+      <rect x="874" y="126" width="72" height="22" rx="11" class="card"/><text x="882" y="141" class="chiptx">ALONG wght</text>
+      <rect x="952" y="126" width="56" height="22" rx="11" class="card"/><text x="960" y="141" class="chiptx">ALL</text>
+      <line x1="788" y1="164" x2="1004" y2="164" class="ln"/>
+      <text x="788" y="188" class="s">Top edge</text><text x="890" y="188" class="m">+0.85 px</text><text x="962" y="188" class="m">Context</text>
+      <text x="788" y="214" class="s">Bottom edge</text><text x="890" y="214" class="m" style="fill:var(--accent)">0.00 px</text>
+      <rect x="958" y="201" width="52" height="18" rx="9" class="accsoft"/><text x="964" y="214" class="chiptx" style="fill:var(--accent)">MANUAL</text>
+      <text x="788" y="240" class="s">Left edge</text><text x="890" y="240" class="m">+0.42 px</text><text x="962" y="240" class="m">Style</text>
+      <text x="788" y="266" class="s">Right edge</text><text x="890" y="266" class="m">+0.42 px</text><text x="962" y="266" class="m">Style</text>
+      <line x1="788" y1="284" x2="1004" y2="284" class="ln"/>
+      <text x="788" y="308" class="m">RESOLVES FROM</text>
+      <text x="788" y="330" class="s">Manual → Shared part</text>
+      <text x="788" y="350" class="s">→ Context → Style</text>
+      <line x1="788" y1="368" x2="1004" y2="368" class="ln"/>
+      <rect x="788" y="380" width="216" height="30" rx="6" class="card"/><text x="806" y="400" class="s">Fit to a drawing…</text>
+      <rect x="788" y="418" width="216" height="30" rx="6" class="card"/><text x="806" y="438" class="s">Match sibling…</text>
+      <!-- findings -->
+      <rect x="20" y="484" width="1000" height="98" rx="8" class="card"/>
+      <text x="36" y="508" class="m">FINDINGS</text>
+      <circle cx="42" cy="530" r="5" class="warn"/><text x="56" y="534" class="s">Rule unsure: which side of <tspan style="font-weight:600">case</tspan> holds at wght 700 (knockout inside a solid)</text><text x="760" y="534" class="m">wght 700 · case · bottom edge</text>
+      <circle cx="42" cy="556" r="5" class="good"/><text x="56" y="560" class="s" style="fill:var(--muted)">Gap between badge and body stays 1 px at every master</text>
+    </svg>
+    </div>
+    <figcaption><b>Icon editor.</b> Opened from a queue row on the exact part, location and control the finding points at. Here the rule grows the lock badge's case downward at wght 700 (red), while the reference holds its bottom and grows up (blue). A side pin on the bottom edge holds it still, and the score jumps. The inspector shows that the pinned value is Manual and the rest still resolve from Context and Style.</figcaption>
+  </figure>
+
+  <!-- FIT -->
+  <figure class="wf">
+    <div class="wf-scroll">
+    <svg viewBox="0 0 1040 380" role="img" aria-label="Fit to a drawing wireframe: drawing, fitted master and diff side by side with scores and remaining misses">
+      <rect x="0" y="0" width="1040" height="52" class="box"/>
+      <text x="20" y="31" class="h">Fit to a drawing · padel · wght 700</text>
+      <rect x="880" y="12" width="140" height="28" rx="6" class="accsoft"/><text x="912" y="31" class="s" style="fill:var(--accent);font-weight:600">Accept fit</text>
+      <g transform="translate(20 68)">
+        <rect width="240" height="220" rx="8" class="card"/>
+        <text x="16" y="24" class="m">YOUR DRAWING</text>
+        <circle cx="120" cy="110" r="56" class="ref" stroke-width="16"/>
+        <path d="M150 150l40 44" class="ref" stroke-width="16" stroke-linecap="round"/>
+        <text x="16" y="206" class="m">imported: padel@wght=700.svg</text>
+      </g>
+      <g transform="translate(276 68)">
+        <rect width="240" height="220" rx="8" class="card"/>
+        <text x="16" y="24" class="m">BEFORE (RULE)</text>
+        <circle cx="120" cy="110" r="56" class="ink" stroke-width="20"/>
+        <path d="M150 150l40 44" class="ink" stroke-width="12" stroke-linecap="round"/>
+        <text x="16" y="206" class="s" style="font-weight:600">47% of edges</text>
+      </g>
+      <g transform="translate(532 68)">
+        <rect width="240" height="220" rx="8" class="card"/>
+        <text x="16" y="24" class="m">AFTER (FITTED SETTINGS)</text>
+        <circle cx="120" cy="110" r="56" class="ink" stroke-width="16"/>
+        <path d="M150 150l40 44" class="ink" stroke-width="16" stroke-linecap="round"/>
+        <text x="16" y="206" class="s" style="font-weight:600;fill:var(--good)">91% of edges</text>
+      </g>
+      <g transform="translate(788 68)">
+        <rect width="232" height="220" rx="8" class="card"/>
+        <text x="16" y="24" class="m">WHAT THE FIT CHANGED</text>
+        <text x="16" y="52" class="s">14 side moves</text>
+        <text x="16" y="74" class="s">2 end moves</text>
+        <text x="16" y="96" class="s">0 edge moves</text>
+        <text x="16" y="128" class="m">STILL MISSES (2)</text>
+        <circle cx="22" cy="148" r="5" class="warn"/><text x="34" y="152" class="s">Handle end is angled</text>
+        <text x="34" y="170" class="m">needs End style</text>
+        <circle cx="22" cy="192" r="5" class="warn"/><text x="34" y="196" class="s">Ring join shape</text>
+      </g>
+      <rect x="20" y="304" width="1000" height="56" rx="8" class="accsoft"/>
+      <text x="36" y="328" class="s" style="font-weight:600">Accepting stores settings, not the drawing.</text>
+      <text x="36" y="346" class="s">The drawing stays as a reference for scoring. The fit's settings are marked Manual and become training examples for the rule.</text>
+    </svg>
+    </div>
+    <figcaption><b>Fit to a drawing.</b> Research 08's "Google's own moves" ceiling is exactly this fit. The misses list routes whatever the fit can't express to the tool that can.</figcaption>
+  </figure>
+
+  <h3>The other screens</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Screen</th><th>Anatomy</th></tr></thead>
+    <tbody>
+      <tr><td>Import report</td><td>Counts (exact, with guesses, failed); each guess with a one-click rename that writes the layer-name grammar; each failure explained in design terms ("this path is a flattened boolean; the cutter is gone")</td></tr>
+      <tr><td>Style</td><td>Three cards: Pen, Anchored, Learn from my set. The context table per location (the semantic tier). Retrain with an impact preview: how many unfixed icons change, how many by more than 0.25 px, and the ten biggest changes</td></tr>
+      <tr><td>Proof</td><td>Whole set at any location; a size waterfall at 16–48 px rendered at real pixels; icons inline with text; light and dark grounds for the GRAD −25 case; interpolation scrub; compare with the last build</td></tr>
+      <tr><td>Export</td><td>Variable TTF and WOFF2, optional static instances and per-instance SVG; build summary with SHA-256 and "same as last build"; a changelog for consumers; blocked while any icon is Blocked</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Manual tooling</h2>
+  <p>Where 100% stops, from research 08 on the 20 hardest Material icons, and the tool that covers each gap.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Gap</th><th>Size</th><th>Automatic fix</th><th>Manual tool</th></tr></thead>
+    <tbody>
+      <tr><td>Rule holds the wrong side</td><td>13–25 points</td><td>Retrain; knockouts trained separately</td><td>Side pins, Match sibling, Fit to a drawing</td></tr>
+      <tr><td>Stroke end length</td><td>Part of 3–5% of edges</td><td>End moves from the rule</td><td>End handles</td></tr>
+      <tr><td>End and junction shape</td><td>Rest of 3–5%</td><td>End angle (next research)</td><td>End style</td></tr>
+      <tr><td>Part moved for balance</td><td>Up to 16% at some locations</td><td>Per-part rule</td><td>Part nudge</td></tr>
+      <tr><td>Detail dropped at small sizes</td><td>Under 4% overall; 10–26% at 16 px</td><td>None</td><td>Collapse below; alternate construction (decision 5)</td></tr>
+      <tr><td>Anything else</td><td>Rare</td><td>None</td><td>Point override (not v1)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The tools</h3>
+  <p>The research brief's five, plus four new ones marked <span class="pill acc">NEW</span>.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Tool</th><th>Gesture</th><th>Stores</th></tr></thead>
+    <tbody>
+      <tr><td>Side pins</td><td>Click a stroke segment's side to hold it; drag for an exact amount</td><td>Per-segment <code>sides</code></td></tr>
+      <tr><td>End handles</td><td>Drag a stroke end along the stroke</td><td><code>sides.ends</code></td></tr>
+      <tr><td>End style</td><td>Flat, angled, tapered, on the end handle</td><td>End angle (planned)</td></tr>
+      <tr><td>Part nudge</td><td>Move or scale a part at one location</td><td>Part transform (planned)</td></tr>
+      <tr><td>Fit to a drawing</td><td>Import or draw one master; Accept</td><td>Fitted <code>sides</code>, <code>ends</code>, <code>edges</code></td></tr>
+      <tr><td>Point override</td><td>Move outline points at one location</td><td>Point deltas, staleness-checked</td></tr>
+      <tr><td>Match sibling <span class="pill acc">NEW</span></td><td>Pick another icon; copy settings to parts that match</td><td>Copied settings</td></tr>
+      <tr><td>Shared parts <span class="pill acc">NEW</span></td><td>Promote a part to the set's part library; instances follow it</td><td>Settings on the main part, inherited by instances. Fix the badge once, 120 icons follow</td></tr>
+      <tr><td>Collapse below <span class="pill acc">NEW</span></td><td>Set the size or weight below which a part shrinks to nothing</td><td>A threshold on the part. Points collapse rather than vanish, so masters still interpolate</td></tr>
+      <tr><td>Batch fix <span class="pill acc">NEW</span></td><td>Select queue rows with one reason; apply one fix to all</td><td>One setting per icon, tagged with the batch</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Scope: intent and amount</h3>
+  <p>A fix applies at one location by default, but designers usually make the same call along an axis. Split each fix in two:</p>
+  <ul>
+    <li><strong>Intent</strong> is which side holds, which end shortens, which part collapses. It carries along its axis by default, and from wght to GRAD, since grade behaves like a small weight change on the outside edge (research 04). It doesn't cross to opsz, which moves counters the other way.</li>
+    <li><strong>Amount</strong> is the exact distance. It stays where it was set; other locations take the rule's amount for the pinned intent.</li>
+  </ul>
+  <p>Scope chips above the inspector: <strong>This location</strong>, <strong>Along wght</strong>, <strong>All locations</strong>.</p>
+
+  <h3>The brief's open questions</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Question</th><th>Recommendation</th></tr></thead>
+    <tbody>
+      <tr><td>Pins on curves without clutter</td><td>Pins only on the selected part. On hover, the nearest segment's two sides highlight. A pinned side shows a small tick at rest.</td></tr>
+      <tr><td>Does a wght 700 fix reach GRAD and opsz?</td><td>Intent reaches GRAD; amounts stay; opsz stays separate.</td></tr>
+      <tr><td>Showing the rule's confidence</td><td>Three levels (confident, unsure, guessing) with a reason chip. No percentages. The queue order is the signal; the level explains it.</td></tr>
+      <tr><td>Where references live</td><td>A reference track on each icon, outside the source. Imported from files or frames named <code>icon@wght=700</code>. Used for scores and fitting, never for generation.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Checks</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Check</th><th>Kind</th></tr></thead>
+    <tbody>
+      <tr><td>Masters share contours, points, point types, start points, directions</td><td><span class="pill bad">BLOCKING</span></td></tr>
+      <tr><td>A cut stays inside its valid weight range</td><td><span class="pill bad">BLOCKING</span></td></tr>
+      <tr><td>A counter closes or drops under the minimum</td><td><span class="pill warn">WARNING</span></td></tr>
+      <tr><td>Two parts closer than the minimum gap</td><td><span class="pill warn">WARNING</span></td></tr>
+      <tr><td>A stroke under the minimum width</td><td><span class="pill warn">WARNING</span></td></tr>
+      <tr><td>The rule is unsure</td><td><span class="pill warn">WARNING</span></td></tr>
+      <tr><td>Reference score under 95% of edges within 0.25 px</td><td><span class="pill warn">WARNING</span></td></tr>
+      <tr><td>Interpolation wobble; small-size legibility</td><td><span class="pill mut">LATER</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>v1 scope</h2>
+  <p>Following the decision log: wght and FILL first; point overrides designed for, not built.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>In v1</th><th>Next</th></tr></thead>
+    <tbody>
+      <tr><td>Skeleton and outlined SVG import (fitted); import report</td><td>Figma plugin</td></tr>
+      <tr><td>Pen and Anchored styles</td><td>Learn from my set</td></tr>
+      <tr><td>wght and FILL</td><td>opsz and GRAD</td></tr>
+      <tr><td>Library, queue, editor, proof, export</td><td>Build compare</td></tr>
+      <tr><td>Side pins, end handles, fit to a drawing, match sibling</td><td>End style, part nudge, shared parts, collapse below, batch fix</td></tr>
+      <tr><td>Blocking gates; counter, gap, width warnings; retrain with preview</td><td>Wobble and small-size checks; point override</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>On-disk format</h2>
+  <p>Variance owns the source after import, so everything it owns is saved locally in an open format. A set is a plain folder, readable without Variance and diffable in git.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Path</th><th>Format</th><th>Holds</th></tr></thead>
+    <tbody>
+      <tr><td><code>set.json</code></td><td>JSON</td><td>Axes, ranges, master locations, grid, naming and code points, style, thresholds</td></tr>
+      <tr><td><code>style/rule.json</code></td><td>JSON</td><td>Context table and learned rule (global and semantic tiers)</td></tr>
+      <tr><td><code>icons/&lt;name&gt;/source.svg</code></td><td>SVG</td><td>The skeleton with the layer-name grammar; opens in any SVG editor</td></tr>
+      <tr><td><code>icons/&lt;name&gt;/settings.json</code></td><td>JSON</td><td>Part settings (component tier), tagged Manual, Batch or Fit, with scope</td></tr>
+      <tr><td><code>icons/&lt;name&gt;/refs/*.svg</code></td><td>SVG</td><td>Reference drawings</td></tr>
+      <tr><td><code>builds/&lt;version&gt;/</code></td><td>TTF, WOFF2, JSON</td><td>Font files, hash, changelog</td></tr>
+    </tbody>
+  </table></div>
+  <p>Generated masters also export as <code>.designspace</code> plus UFO, the open source format Glyphs, FontLab and fontmake read. JSON is written with sorted keys so git diffs stay small and an unchanged save writes the same bytes. The original imported SVG is kept as history and never feeds generation.</p>
+
+  <h2>Open decisions</h2>
+  <p class="meta">All nine decided 2026-11-28 as recommended; decision 2 adds the open format above. The first build of the app is in app/ in the repo.</p>
+  <ol class="dec">
+    <li><strong>Where the app runs.</strong> (a) A local web app, <code>variance serve</code>, over the same Python core the CLI and CI use. (b) A desktop app around that core. (c) A Figma plugin as the main app.
+      <span class="rec"><b>Recommended: (a).</b> One core for UI, CLI and CI; files on disk in git. A plugin can't hold the generator and ties the tool to one source app.</span></li>
+    <li><strong>Who owns the source after import.</strong> (a) Variance adopts it; re-import is a merge. (b) Figma or Illustrator stays the source.
+      <span class="rec"><b>Recommended: (a).</b> Settings hang on part names, so (b) breaks whenever someone renames a layer.</span></li>
+    <li><strong>Shared parts in v1 or later.</strong>
+      <span class="rec"><b>Recommended: right after v1.</b> The strongest consistency tool, but part matching across icons isn't researched yet.</span></li>
+    <li><strong>Fix scope.</strong> Intent carries along its axis and to GRAD; amounts stay put.
+      <span class="rec"><b>Recommended as written.</b></span></li>
+    <li><strong>Small sizes.</strong> (a) Collapse only. (b) Also alternate constructions: a second source for opsz 20 and below, swapped in by the font's feature variations.
+      <span class="rec"><b>Recommended: (a) in v1, (b) later as an explicit feature.</b> (b) is the only way to simplify a shape, but it's a second drawing, which the core principle avoids.</span></li>
+    <li><strong>Confidence display.</strong>
+      <span class="rec"><b>Recommended:</b> three levels with reasons, no percentages.</span></li>
+    <li><strong>Reference storage.</strong>
+      <span class="rec"><b>Recommended:</b> a reference track on each icon, outside the source.</span></li>
+    <li><strong>Retraining.</strong>
+      <span class="rec"><b>Recommended:</b> a button with an impact preview, never automatic.</span></li>
+    <li><strong>Revisit "v1 input is skeleton SVG only".</strong> Research 05 rebuilt 500 of 500 outlined icons exactly.
+      <span class="rec"><b>Recommended:</b> allow outline import in v1, labelled as fitted, with its guesses in the import report.</span></li>
+  </ol>
+
+  <h2>Next steps</h2>
+  <ul>
+    <li>Sean reviews the open decisions.</li>
+    <li>Prototype the editor canvas, side pins and diff overlay as a small page over <code>prototype/rebuild</code>.</li>
+    <li>Research: end angle, part transforms, and knockout training, which three tools above wait on.</li>
+  </ul>
+</div>

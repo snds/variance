@@ -1,0 +1,5 @@
+# The app (variance/). The research prototype has its own list in prototype/requirements.txt.
+fonttools==4.69.1
+skia-pathops==0.9.2
+numpy
+scipy==1.18.1
