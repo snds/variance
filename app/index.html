@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Variance</title>
+<link rel="stylesheet" href="/app/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark" aria-hidden="true"></span>Variance</div>
+  <div class="setname" id="setname"></div>
+  <nav class="tabs" aria-label="Views">
+    <a href="#library" data-view="library">Library</a>
+    <a href="#queue" data-view="queue">Queue <span class="count" id="qcount"></span></a>
+    <a href="#style" data-view="style">Style</a>
+    <a href="#proof" data-view="proof">Proof</a>
+    <a href="#export" data-view="export">Export</a>
+  </nav>
+  <div class="top-actions">
+    <button class="btn" id="import-btn">Import SVGs</button>
+  </div>
+</header>
+<main id="view" tabindex="-1"></main>
+<input type="file" id="file-input" accept=".svg,image/svg+xml" multiple hidden>
+<input type="file" id="ref-input" accept=".svg,image/svg+xml" hidden>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="/app/app.js"></script>
+</body>
+</html>

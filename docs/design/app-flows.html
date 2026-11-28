@@ -530,7 +530,7 @@ ol.dec { padding-left: 1.4em; } ol.dec li { margin: 12px 0; }
   <p>Generated masters also export as <code>.designspace</code> plus UFO, the open source format Glyphs, FontLab and fontmake read. JSON is written with sorted keys so git diffs stay small and an unchanged save writes the same bytes. The original imported SVG is kept as history and never feeds generation.</p>
 
   <h2>Open decisions</h2>
-  <p class="meta">Decided 2026-11-28 as recommended: 1, 2 (with the open format above), 5 and 9. Still open: 3, 4, 6, 7, 8.</p>
+  <p class="meta">All nine decided 2026-11-28 as recommended; decision 2 adds the open format above. The first build of the app is in app/ in the repo.</p>
   <ol class="dec">
     <li><strong>Where the app runs.</strong> (a) A local web app, <code>variance serve</code>, over the same Python core the CLI and CI use. (b) A desktop app around that core. (c) A Figma plugin as the main app.
       <span class="rec"><b>Recommended: (a).</b> One core for UI, CLI and CI; files on disk in git. A plugin can't hold the generator and ties the tool to one source app.</span></li>

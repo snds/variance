@@ -4,6 +4,11 @@ Decisions Sean has made, newest first. Each links to the research that framed it
 
 | Date | Decision | Detail | From |
 |---|---|---|---|
+| 2026-11-28 | **Shared parts ship right after v1** | Part matching across icons needs research first. | [App flows](design/app-flows.md#open-decisions-for-sean) |
+| 2026-11-28 | **Fix scope: intent carries, amounts stay** | A pin (which side holds) carries along wght and to GRAD; exact amounts stay at their master; opsz stays separate. | [App flows](design/app-flows.md#scope-one-master-or-along-an-axis) |
+| 2026-11-28 | **Rule confidence: three levels with reasons** | No percentages. | [App flows](design/app-flows.md#open-decisions-for-sean) |
+| 2026-11-28 | **References live on each icon, outside the source** | `icons/<name>/refs/<name>@wght=<w>.svg`; used for scores and fitting only. | [App flows](design/app-flows.md#on-disk-format) |
+| 2026-11-28 | **Retraining is a button with an impact preview** | Never automatic. | [App flows](design/app-flows.md#open-decisions-for-sean) |
 | 2026-11-28 | **The app runs locally as a web app** | `variance serve` opens a browser UI over the same Python core the CLI and CI use. | [App flows](design/app-flows.md#open-decisions-for-sean) |
 | 2026-11-28 | **Variance owns the source after import, in an open local format** | Re-importing an SVG is a merge. Sean's condition: everything is saved locally as open files (skeleton SVG, settings JSON), readable without Variance. | [App flows](design/app-flows.md#on-disk-format) |
 | 2026-11-28 | **Small sizes: collapse only in v1** | A part can shrink to nothing below a size. Alternate constructions (a second source swapped in by feature variations) come later. | [App flows](design/app-flows.md#open-decisions-for-sean) |

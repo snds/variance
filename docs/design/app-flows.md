@@ -379,7 +379,7 @@ diffable in git:
 
 ## Open decisions for Sean
 
-_Decided 2026-11-28: 1, 2 (with an open local format; see [On-disk format](#on-disk-format)), 5 and 9, as recommended. Still open: 3, 4, 6, 7, 8._
+_All nine decided 2026-11-28 as recommended; decision 2 adds an open local format (see [On-disk format](#on-disk-format)). The first build of the app is in [`app/`](../../app/README.md)._
 
 1. **Where the app runs.** The generator is Python (fontTools, Skia).
    Options: (a) a local web app, `variance serve`, that opens in the browser
