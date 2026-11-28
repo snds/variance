@@ -23,6 +23,12 @@ Research phase. See [docs/research](docs/research/) and the [decision log](docs/
 | [06 · Closing the weight gap](docs/research/06-closing-the-weight-gap.md) | Dot primitive, a pen-only weight test on Phosphor, and a learned anchor rule for Material. [HTML](docs/research/06-closing-the-weight-gap.html). |
 | [07 · Anchors in the generator](docs/research/07-anchors-in-the-generator.md) | The learned anchor rule built into the generator, scored on the 20 hardest Material icons at wght 100 and 700. [HTML](docs/research/07-anchors-in-the-generator.html). |
 
+## Design
+
+| Doc | What it covers |
+|---|---|
+| [App flows](docs/design/app-flows.md) | End-to-end flows, object model, key screens with wireframes ([HTML](docs/design/app-flows.html)), manual-fix tooling, and open decisions for the app. |
+
 ## Prototype
 
 [`prototype/`](prototype/) builds a two-icon, four-axis variable font from
