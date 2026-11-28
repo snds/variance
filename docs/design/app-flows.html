@@ -110,7 +110,7 @@ ol.dec { padding-left: 1.4em; } ol.dec li { margin: 12px 0; }
       <li><b>One loop, six stages:</b> import, choose a style, generate, triage, fix, export. A seventh, teach the rule, feeds fixes back so later icons need fewer.</li>
       <li><b>The review queue is the home screen.</b> The rule alone reaches 76% / 64% of Google's edges; fitted settings reach 94% / 89%. The queue ranks icons by risk and says why, so designers look at the worst 10–20%.</li>
       <li><b>Fit to a drawing is the headline tool.</b> Draw one master by hand once; Variance turns it into settings on the source.</li>
-      <li><b>Nine open decisions</b> at the end. The biggest: where the app runs.</li>
+      <li><b>Decided 2026-11-28:</b> a local web app over the Python core; Variance owns the source, saved locally as plain SVG and JSON; collapse-only for small sizes in v1; outline import in v1.</li>
     </ul>
   </div>
 
@@ -505,7 +505,7 @@ ol.dec { padding-left: 1.4em; } ol.dec li { margin: 12px 0; }
   <div class="tbl"><table>
     <thead><tr><th>In v1</th><th>Next</th></tr></thead>
     <tbody>
-      <tr><td>Skeleton SVG import with layer-name grammar; import report</td><td>Outline import (decision 9); Figma plugin</td></tr>
+      <tr><td>Skeleton and outlined SVG import (fitted); import report</td><td>Figma plugin</td></tr>
       <tr><td>Pen and Anchored styles</td><td>Learn from my set</td></tr>
       <tr><td>wght and FILL</td><td>opsz and GRAD</td></tr>
       <tr><td>Library, queue, editor, proof, export</td><td>Build compare</td></tr>
@@ -514,7 +514,23 @@ ol.dec { padding-left: 1.4em; } ol.dec li { margin: 12px 0; }
     </tbody>
   </table></div>
 
+  <h2>On-disk format</h2>
+  <p>Variance owns the source after import, so everything it owns is saved locally in an open format. A set is a plain folder, readable without Variance and diffable in git.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Path</th><th>Format</th><th>Holds</th></tr></thead>
+    <tbody>
+      <tr><td><code>set.json</code></td><td>JSON</td><td>Axes, ranges, master locations, grid, naming and code points, style, thresholds</td></tr>
+      <tr><td><code>style/rule.json</code></td><td>JSON</td><td>Context table and learned rule (global and semantic tiers)</td></tr>
+      <tr><td><code>icons/&lt;name&gt;/source.svg</code></td><td>SVG</td><td>The skeleton with the layer-name grammar; opens in any SVG editor</td></tr>
+      <tr><td><code>icons/&lt;name&gt;/settings.json</code></td><td>JSON</td><td>Part settings (component tier), tagged Manual, Batch or Fit, with scope</td></tr>
+      <tr><td><code>icons/&lt;name&gt;/refs/*.svg</code></td><td>SVG</td><td>Reference drawings</td></tr>
+      <tr><td><code>builds/&lt;version&gt;/</code></td><td>TTF, WOFF2, JSON</td><td>Font files, hash, changelog</td></tr>
+    </tbody>
+  </table></div>
+  <p>Generated masters also export as <code>.designspace</code> plus UFO, the open source format Glyphs, FontLab and fontmake read. JSON is written with sorted keys so git diffs stay small and an unchanged save writes the same bytes. The original imported SVG is kept as history and never feeds generation.</p>
+
   <h2>Open decisions</h2>
+  <p class="meta">Decided 2026-11-28 as recommended: 1, 2 (with the open format above), 5 and 9. Still open: 3, 4, 6, 7, 8.</p>
   <ol class="dec">
     <li><strong>Where the app runs.</strong> (a) A local web app, <code>variance serve</code>, over the same Python core the CLI and CI use. (b) A desktop app around that core. (c) A Figma plugin as the main app.
       <span class="rec"><b>Recommended: (a).</b> One core for UI, CLI and CI; files on disk in git. A plugin can't hold the generator and ties the tool to one source app.</span></li>

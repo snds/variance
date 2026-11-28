@@ -27,8 +27,9 @@ brief, [manual-fix-tooling.md](manual-fix-tooling.md), and research 01–08._
   sizes). Each has a tool below. Real redraws at small sizes need one new
   capability: collapsing a part to nothing below a size, or swapping in an
   alternate construction. That is open decision 5.
-- **Nine open decisions** are listed at the end, each with a recommendation.
-  The biggest is where the app runs (decision 1).
+- **Decided 2026-11-28:** a local web app over the Python core; Variance owns
+  the source after import, saved locally as plain SVG and JSON; collapse-only
+  for small sizes in v1; outline import in v1. Five smaller decisions remain.
 
 ## Who it's for
 
@@ -352,7 +353,33 @@ v1):
 | Retrain with impact preview | |
 | | Point override |
 
+## On-disk format
+
+Sean's condition on decision 2: everything Variance owns is saved locally in
+an open format. A set is a plain folder, readable without Variance and
+diffable in git:
+
+| Path | Format | Holds |
+|---|---|---|
+| `set.json` | JSON | Axes, ranges, master locations, grid, naming and code points, style choice, thresholds |
+| `style/rule.json` | JSON | The context table and learned rule values (global and semantic tiers) |
+| `icons/<name>/source.svg` | SVG | The skeleton: live strokes with the layer-name grammar. Opens in any SVG editor |
+| `icons/<name>/settings.json` | JSON | Part settings (component tier), each tagged Manual, Batch or Fit, with its scope |
+| `icons/<name>/refs/<name>@wght=700.svg` | SVG | Reference drawings |
+| `parts/<part>.svg` + `.json` | SVG, JSON | Shared parts and their settings (when that ships) |
+| `builds/<version>/` | TTF, WOFF2, JSON | Font files, hash, changelog |
+
+- **Interop export:** `.designspace` plus UFO masters, the open source format
+  Glyphs, FontLab and fontmake read. That's an export of generated masters,
+  not a second source.
+- **JSON is pretty-printed with sorted keys**, so git diffs stay small and a
+  save with no change writes the same bytes.
+- **The original imported SVG** is kept under `icons/<name>/import/` as
+  history, never read by generation.
+
 ## Open decisions for Sean
+
+_Decided 2026-11-28: 1, 2 (with an open local format; see [On-disk format](#on-disk-format)), 5 and 9, as recommended. Still open: 3, 4, 6, 7, 8._
 
 1. **Where the app runs.** The generator is Python (fontTools, Skia).
    Options: (a) a local web app, `variance serve`, that opens in the browser
