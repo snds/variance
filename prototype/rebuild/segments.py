@@ -66,11 +66,40 @@ class Edges:
         if n is not None: ok &= self.n @ np.asarray(n, float) > 0.7
         return np.nonzero(ok)[0]
 
+class Ref:
+    """Fit to a drawing (research 09): instead of research 04's edge table,
+    read moves straight off a reference master. At a point on our default
+    outline, the reference's signed distance (+ inside its ink) is how far
+    the reference's edge sits beyond ours, so it is the move (+ = ink
+    grows). Works for any reference: another set's master or a designer's
+    drawing."""
+    R = 90                                                        # how far along the normal to look, units
+    def __init__(self, ref_mask):
+        self.m = ref_mask
+        self.s = (E.sdf(ref_mask) - 0.5) * E.U                    # units, + inside the reference's ink
+    def _px(self, q):
+        q = np.atleast_2d(q)
+        c = np.clip((q[:, 0] / E.U).astype(int), 0, self.m.shape[1] - 1); r = np.clip(((960 - q[:, 1]) / E.U).astype(int), 0, self.m.shape[0] - 1)
+        return r, c
+    def at(self, q, n=None):
+        """With a direction n: walk along n through q and return the nearest
+        place where the reference's ink ends (ink behind, empty ahead), as a
+        distance from q. Without one: the signed distance to the nearest edge."""
+        if n is None:
+            r, c = self._px(q); return float(self.s[r[0], c[0]])
+        n = np.asarray(n, float) / (np.linalg.norm(n) or 1.0); t = np.arange(-self.R, self.R + 1, 1.0)
+        r, c = self._px(np.asarray(q, float)[None, :] + t[:, None] * n[None, :]); ink = self.m[r, c]
+        cross = np.nonzero(ink[:-1] & ~ink[1:])[0]
+        if not len(cross): return None
+        return float(t[cross[np.argmin(np.abs(t[cross] + 0.5))]] + 0.5)
+
 def near_moves(ed, k, q, n):
     """Moves (+ = ink grows) of glyph edges near point q whose outward normal points along n."""
+    if isinstance(ed, Ref):
+        v = ed.at(q, n); return [] if v is None else [v]
     j = ed.near(q, n); return list(k[j] * ed.out[j])
 
-def seg_moves(part, ed, k, Wd=W):
+def seg_moves(part, ed, k, Wd=W, angled=False):
     """Per contour, per segment: (left move, right move); per open contour:
     (start move, end move). None where no glyph edge was found. A knockout's
     glyph edges face in, toward its centre-line."""
@@ -95,7 +124,13 @@ def seg_moves(part, ed, k, Wd=W):
         for seg, t, s in ((c[0], 0.0, -1), (c[-1], 1.0, 1)):
             tg = _tan(seg, t)
             if tg is None: e.append(None); continue
-            out = s * tg; v = near_moves(ed, k, _bez(seg, t) + out * reach, fc * out)
+            out = s * tg; p0 = _bez(seg, t) + out * reach
+            if angled:                                        # each corner on its own: (left of the stroke, right of it)
+                nl = np.array([-tg[1], tg[0]]); cs_ = []
+                for side in (1, -1):
+                    v = near_moves(ed, k, p0 + side * nl * Wd * 0.35, fc * out); cs_.append(float(np.median(v)) if v else None)
+                e.append(None if None in cs_ else tuple(cs_)); continue
+            v = near_moves(ed, k, p0, fc * out)
             e.append(float(np.median(v)) if v else None)
         ends.append(tuple(e))
     return sides, ends
@@ -114,6 +149,9 @@ def whole_moves(part, ed, k, Wd=W):
     fc = -1 if (part.get("role") or {}).get("knockout") else 1
     if part.get("dot"):
         x, y = map(float, part["d"][1:].split(" L")[0].split()); r = Wd / 2 + part.get("extra", 0) / 2
+        if isinstance(ed, Ref):
+            v = [ed.at((x + r * np.cos(a), y + r * np.sin(a))) for a in np.linspace(0, 2 * np.pi, 16, endpoint=False)]
+            m = float(np.median(v)); return (m, m)
         v = [k[j] * ed.out[j] for a in np.linspace(0, 2 * np.pi, 16, endpoint=False)
              for j in ed.near((x + r * np.cos(a), y + r * np.sin(a)), (fc * np.cos(a), fc * np.sin(a)))]
         m = float(np.median(v)) if v else None
@@ -132,7 +170,7 @@ def solid_move(part, ed, k):
     import raster as R
     c = V.to_contours(V.path_from_d(part["d"]))
     P = np.vstack(R.flatten(c, 12)) if c else np.zeros((0, 2))
-    v = [k[j] * ed.out[j] for p in P[::2] for j in ed.near(p, None, 6)]
+    v = [ed.at(p) for p in P[::2]] if isinstance(ed, Ref) else [k[j] * ed.out[j] for p in P[::2] for j in ed.near(p, None, 6)]
     return float(np.median(v)) if v else None
 
 def solid_edge_moves(part, ed, k, ink):
@@ -201,7 +239,10 @@ def _d_of(path):
     pen = SVGPathPen(None); path.draw(pen); return pen.getCommands()
 
 def at_master(parts, Wn, mode, ed, k):
-    """The source at one master. mode: stroke07 | stroke | segment | ends | solids."""
+    """The source at one master. mode: stroke07 | stroke | segment | ends |
+    solids | angled (solids, with each end corner moved on its own)."""
+    angled = mode == "angled"
+    if angled: mode = "solids"
     if mode == "solids": parts = visible_patches(parts)
     out = []
     for p in parts:
@@ -222,7 +263,7 @@ def at_master(parts, Wn, mode, ed, k):
                     q["width"] = max(4.0, W + kl + kr); q["offset"] = (kl - kr) / 2
             else:
                 fb = tuple(whole) if whole and None not in whole else ((Wn - W) / 2, (Wn - W) / 2)
-                sides, ends = seg_moves(p, ed, k)
+                sides, ends = seg_moves(p, ed, k, angled=angled)
                 sides = fill_gaps(sides, fb)
                 def widths(a, b):              # a side may cross the centre-line; only the total width must stay positive
                     l, r = W / 2 + sg * a, W / 2 + sg * b; short = max(0.0, 4.0 - l - r) / 2
@@ -233,7 +274,11 @@ def at_master(parts, Wn, mode, ed, k):
                     sq = p.get("cap") == "square"
                     def end_extra(v, sd):                      # a square cap already moves half the end segment's width change
                         return 0.0 if v is None else sg * v - (sg * (sd[0] + sd[1]) / 2 if sq else 0.0)
-                    q["sides"]["ends"] = [(0.0, 0.0) if e is None else (end_extra(e[0], cs[0]), end_extra(e[1], cs[-1]))
+                    def one(v, sd, start):
+                        if isinstance(v, tuple):               # angled: (left corner, right corner); a start cap runs right to left
+                            l_, r_ = end_extra(v[0], sd), end_extra(v[1], sd); return (r_, l_) if start else (l_, r_)
+                        return end_extra(v, sd)
+                    q["sides"]["ends"] = [(0.0, 0.0) if e is None else (one(e[0], cs[0], True), one(e[1], cs[-1], False))
                                           for e, cs in zip(ends, sides)]
         out.append(q)
     return out
@@ -305,8 +350,44 @@ def main(npz, pkl, out):
             print(n, loc, {h: v.get("edges") for h, v in r.items()}, flush=True)
         json.dump(res, open(out, "w"), indent=1)
 
+# Research 09: all six masters. Stroke width at each master: the median
+# thickness Google's master gives a default 80-unit stroke (measured from the
+# edge table; a measurement, not Google's internal value).
+LOCS6 = {"w100": (0, 28), "w700": (1, 124), "o20": (2, 72), "o48": (3, 60), "g200": (4, 106), "gm50": (5, 70)}
+
+def main9(npz, pkl, out):
+    """Every master, four recipes: Google's edge moves through research 04's
+    table (best), a fit read straight off Google's master (fit), the same
+    with angled ends (angled), and the learned rule (learned)."""
+    Z = np.load(npz); A = Z["edges"]; names = [str(x) for x in Z["names"]]
+    Xf, ctx, g, L = AN.features(A)
+    picks = json.load(open(__file__.replace("segments.py", "picks.json")))["material"]
+    src = pickle.load(open(pkl, "rb")); inpick = np.isin(g, [names.index(n) for n in picks])
+    pred = {}
+    for loc, (li, Wn) in LOCS6.items():
+        k = A[:, 9 + li]; tr = ~inpick & (A[:, 15 + li] <= 10)
+        m = HistGradientBoostingRegressor(loss="absolute_error", max_iter=300, max_leaf_nodes=63, categorical_features=[0], random_state=7)
+        m.fit(Xf[tr], k[tr], sample_weight=L[tr]); pred[loc] = m.predict(Xf); print("trained", loc, flush=True)
+    res = {}
+    for n in picks:
+        ix = np.nonzero(g == names.index(n))[0]; ed = Edges(A[ix]); res[n] = {}
+        for loc, (li, Wn) in LOCS6.items():
+            real = E.mask(IO.ms_contours(n, loc)); ref = Ref(real); r = {}
+            for key, e, mode, kk in (("best", ed, "solids", A[ix, 9 + li]), ("fit", ref, "solids", None),
+                                     ("angled", ref, "angled", None), ("learned", ed, "solids", pred[loc][ix])):
+                try:
+                    parts = at_master(src[n], Wn, mode, e, kk); gen = E.mask(V.to_contours(V.generate(parts)))
+                    r[key] = {"edges": round(WT.edges_within(gen, real), 4)}
+                    if key == "angled": r[key]["blame"], r[key]["edge_px"] = blame(parts, gen, real)
+                except (pathops.PathOpsError, ValueError) as ex:
+                    r[key] = {"error": repr(ex)[:80]}
+            res[n][loc] = r
+            print(n, loc, {h: v.get("edges") for h, v in r.items()}, flush=True)
+        json.dump(res, open(out, "w"), indent=1)
+
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    if sys.argv[1] == "nine": main9(*sys.argv[2:5])
+    else: main(*sys.argv[1:4])
 
 def figure(npz, pkl, items, out, size=170):
     """Google's master against ours: one move per stroke side (research 07's

@@ -49,7 +49,7 @@ is marked as manual, so the rule never overwrites it.
 |---|---|---|---|
 | Which side holds still (most common) | A bar that should thin from the top, not both sides | **Side pins**: click a side of a segment to hold it, or drag it to an exact position. A pin on the other side moves it instead. | `sides` for that segment |
 | End length | A stroke that should stop short at a junction | **End handles**: drag an end along the stroke. | `sides.ends` |
-| End shape (next research step) | Angled or tapered cuts | **End style** picker on the end handle: flat, angled, tapered. | Planned: end angle |
+| End shape | Ends at junctions, angled or tapered cuts. Research 09: the largest remaining miss (4.5–6.6% of edges), and a simple angle doesn't fix it, so expect hand work here. | **End style** picker on the end handle: flat, angled, follow the neighbouring stroke. | End move per corner (generator supports it), later an end shape |
 | Part position or size | A badge that shifts so its gap stays even | **Part nudge**: move or scale one part at one master. | Planned: per-master transform on the part |
 | Real redraw (rare, under 4% of edges) | A detail dropped at a light weight | **Point override**: edit outline points at one master. | Point deltas, staleness-checked |
 
@@ -65,6 +65,10 @@ exactly how research 08 measured its 89–94% ceiling. So the flow can be:
 4. Whatever the fit can't express shows up as a short list of remaining misses.
 
 This turns hand drawing into parametric data instead of a parallel file.
+
+Research 09 built the measuring engine for this (`segments.Ref`): it reads
+moves straight off any reference drawing and lands within 0–2 points of the
+best the controls can do, at all six Material masters (87–94% of edges).
 
 ## Support features
 
@@ -99,5 +103,7 @@ This turns hand drawing into parametric data instead of a parallel file.
   only on hover, or only on the selected part?).
 - Whether a fix set at wght 700 should propagate to GRAD and opsz masters,
   or be per axis.
-- How to present the rule's confidence so the queue feels trustworthy.
+- How to present the rule's confidence so the queue feels trustworthy. The
+  rule is much better on some axes (85–88% at opsz 48 and GRAD −50) than
+  others (64% at wght 700), so weight the queue by axis.
 - Where reference drawings live (same file as sources, or a side layer).

@@ -150,7 +150,8 @@ def side_stroke(d, left, right, cap="butt", steps=32, ends=None):
     this is an ordinary stroke of width left + right, shifted sideways.
     Corners are mitred; caps are butt, square or round. ends(ci) -> (start,
     end): extra length at each end of an open contour (+ longer, - shorter),
-    for butt and square caps; a round cap follows the width."""
+    for butt and square caps; a round cap follows the width. An end given
+    as a pair (left corner, right corner) is cut at an angle."""
     L = offset_pts(d, left, steps); R = offset_pts(d, lambda ci, si: -right(ci, si), steps)
     p = pathops.Path(); pen = p.getPen(); trims = []
     segs = segs_of(d)
@@ -163,9 +164,12 @@ def side_stroke(d, left, right, cap="butt", steps=32, ends=None):
         es, ee = ends(ci) if ends else (0.0, 0.0)
         def cap_pts(a, b, t, w, e):       # from side point a to side point b around an end facing t
             if cap in ("square", "butt"):
-                tot = (w if cap == "square" else 0.0) + e
-                if tot < 0: trims.append((a, b, t, tot)); return []
-                return [(a[0] + t[0] * tot, a[1] + t[1] * tot), (b[0] + t[0] * tot, b[1] + t[1] * tot)] if tot > 0 else []
+                ea, eb = e if isinstance(e, (tuple, list)) else (e, e)      # a pair: each corner its own length, an angled end
+                base = w if cap == "square" else 0.0; ta, tb = base + ea, base + eb
+                if ta != tb or min(ta, tb) < 0:
+                    trims.append((a, b, t, ta, tb)); hi = max(ta, tb, 0.0)    # draw out to the longer corner, then cut the angle
+                    return [(a[0] + t[0] * hi, a[1] + t[1] * hi), (b[0] + t[0] * hi, b[1] + t[1] * hi)] if hi > 0 else []
+                return [(a[0] + t[0] * ta, a[1] + t[1] * ta), (b[0] + t[0] * tb, b[1] + t[1] * tb)] if max(ta, tb) > 0 else []
             if cap == "round":
                 cx, cy = (a[0] + b[0]) / 2, (a[1] + b[1]) / 2; r = math.dist(a, b) / 2
                 a0 = math.atan2(a[1] - cy, a[0] - cx); out = []
@@ -179,11 +183,13 @@ def side_stroke(d, left, right, cap="butt", steps=32, ends=None):
         pen.moveTo(ring[0]); [pen.lineTo(q) for q in ring[1:]]; pen.closePath()
     p.fillType = pathops.FillType.WINDING
     shape = fill(p)
-    for a, b, t, tot in trims:            # a shortened end: cut off everything past it
-        nx, ny = -t[1], t[0]; m = ((a[0] + b[0]) / 2 + t[0] * tot, (a[1] + b[1]) / 2 + t[1] * tot); h = math.dist(a, b) + 40
-        box = pathops.Path(); bp = box.getPen()
-        q = [(m[0] + nx * h, m[1] + ny * h), (m[0] + nx * h + t[0] * 4 * h, m[1] + ny * h + t[1] * 4 * h),
-             (m[0] - nx * h + t[0] * 4 * h, m[1] - ny * h + t[1] * 4 * h), (m[0] - nx * h, m[1] - ny * h)]
+    for a, b, t, ta, tb in trims:         # a shortened end: cut off everything past the (maybe angled) end line
+        A = (a[0] + t[0] * ta, a[1] + t[1] * ta); B = (b[0] + t[0] * tb, b[1] + t[1] * tb)
+        L = math.dist(A, B) or 1.0; u = ((B[0] - A[0]) / L, (B[1] - A[1]) / L); h = math.dist(a, b) + 40
+        if u[0] * -t[1] + u[1] * t[0] < 0: u = (-u[0], -u[1]); A, B = B, A         # u runs across the stroke, left of t
+        far = 4 * h; box = pathops.Path(); bp = box.getPen()
+        q = [(B[0] + u[0] * h, B[1] + u[1] * h), (B[0] + u[0] * h + t[0] * far, B[1] + u[1] * h + t[1] * far),
+             (A[0] - u[0] * h + t[0] * far, A[1] - u[1] * h + t[1] * far), (A[0] - u[0] * h, A[1] - u[1] * h)]
         bp.moveTo(q[0]); [bp.lineTo(x) for x in q[1:]]; bp.closePath()
         shape = op(shape, fill(box), pathops.PathOp.DIFFERENCE)
     return shape

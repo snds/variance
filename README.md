@@ -23,6 +23,7 @@ Research phase. See [docs/research](docs/research/) and the [decision log](docs/
 | [06 · Closing the weight gap](docs/research/06-closing-the-weight-gap.md) | Dot primitive, a pen-only weight test on Phosphor, and a learned anchor rule for Material. [HTML](docs/research/06-closing-the-weight-gap.html). |
 | [07 · Anchors in the generator](docs/research/07-anchors-in-the-generator.md) | The learned anchor rule built into the generator, scored on the 20 hardest Material icons at wght 100 and 700. [HTML](docs/research/07-anchors-in-the-generator.html). |
 | [08 · Toward 100%](docs/research/08-toward-100.md) | Finer generator controls (per-segment sides, stroke ends, edge moves for solids and patches), two measuring fixes, and editor tooling for what can't be automated. [HTML](docs/research/08-toward-100.html). |
+| [09 · All six masters, and fitting to a drawing](docs/research/09-all-masters-and-fit.md) | The controls at every master, a fit read straight off a drawing, angled ends, and where the learned rule stops. [HTML](docs/research/09-all-masters-and-fit.html). |
 
 ## Prototype
 
